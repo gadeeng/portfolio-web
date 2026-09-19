@@ -138,7 +138,7 @@ export default function ProjectsPage() {
 
   // Tautan teks berlabel
   const linkClass =
-    'focus-ring group/link inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-foreground/60 transition-colors duration-200 hover:text-foreground';
+    'focus-ring group/link inline-flex items-center gap-1.5 rounded-sm text-sm font-medium text-[#e60012]/70 transition-colors duration-200 hover:text-[#e60012]';
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
         {/* Back link */}
         <Link
           href="/"
-          className="focus-ring group mb-14 inline-flex items-center gap-2 text-sm text-foreground/50 transition-colors hover:text-foreground"
+          className="focus-ring group mb-14 inline-flex items-center gap-2 text-sm text-foreground/50 transition-colors hover:text-[#e60012]"
         >
           <ArrowLeft
             className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
@@ -158,9 +158,12 @@ export default function ProjectsPage() {
 
         {/* Page header */}
         <header className="mb-16 flex flex-col gap-5 sm:mb-24 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
-          <h1 className="text-5xl font-semibold leading-[0.95] tracking-tight text-foreground sm:text-7xl">
-            Projects
-          </h1>
+          <div className="flex items-start gap-4">
+            <div className="h-[3.5rem] w-[2px] bg-[#e60012]" aria-hidden="true" />
+            <h1 className="text-5xl font-semibold leading-[0.95] tracking-tight text-foreground sm:text-7xl">
+              Projects
+            </h1>
+          </div>
           <p className="max-w-[30ch] text-sm leading-relaxed text-foreground/50 sm:pb-1.5">
             A curated look at selected projects and work I&apos;m proud to have shipped.
           </p>
@@ -185,14 +188,14 @@ export default function ProjectsPage() {
                 {/* Nama proyek */}
                 <h2 className="text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
                   <span
-                    className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_2px] bg-[position:0_100%] bg-no-repeat pb-1 transition-[background-size] duration-500 ease-out [-webkit-box-decoration-break:clone] [box-decoration-break:clone] group-hover:bg-[length:100%_2px] group-focus-within:bg-[length:100%_2px] motion-reduce:transition-none"
+                    className="bg-[linear-gradient(#e60012,#e60012)] bg-[length:0%_2px] bg-[position:0_100%] bg-no-repeat pb-1 transition-[background-size] duration-500 ease-out [-webkit-box-decoration-break:clone] [box-decoration-break:clone] group-hover:bg-[length:100%_2px] group-focus-within:bg-[length:100%_2px] motion-reduce:transition-none"
                   >
                     {proj.name}
                   </span>
                 </h2>
 
                 <div className="flex flex-col gap-3">
-                  <p className="text-sm text-foreground/45">{proj.role}</p>
+                  <p className="text-sm font-medium text-[#e60012]/70">{proj.role}</p>
                   <p className="max-w-[56ch] text-[15px] leading-relaxed text-foreground/65">
                     {proj.description}
                   </p>
@@ -224,7 +227,10 @@ export default function ProjectsPage() {
                 <div className="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
                   <ul className="flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-foreground/45">
                     {proj.tags.map((tag) => (
-                      <li key={tag}>{tag}</li>
+                      <li key={tag} className="group inline-flex items-center gap-1.5">
+                        <span className="h-1 w-1 rounded-full bg-[#e60012]/50 group-hover:bg-[#e60012] transition-colors" />
+                        {tag}
+                      </li>
                     ))}
                   </ul>
 
@@ -233,7 +239,7 @@ export default function ProjectsPage() {
                     <div className="flex flex-col gap-3">
                       {proj.repositories.length > 0 && (
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] uppercase tracking-wider text-foreground/40">Code</span>
+                          <span className="text-[11px] uppercase tracking-wider text-[#e60012]/60 font-semibold">Code</span>
                           <div className="flex items-center gap-3">
                             {proj.repositories.map((repo) => (
                               <a
@@ -256,7 +262,7 @@ export default function ProjectsPage() {
                       )}
                       {proj.webApps.length > 0 && (
                         <div className="flex items-center gap-2">
-                          <span className="text-[11px] uppercase tracking-wider text-foreground/40">Demo</span>
+                          <span className="text-[11px] uppercase tracking-wider text-[#e60012]/60 font-semibold">Demo</span>
                           <div className="flex items-center gap-3">
                             {proj.webApps.map((app) => (
                               <a
