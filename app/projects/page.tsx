@@ -60,16 +60,26 @@ export default function ProjectsPage() {
       description: 'Analyzed user reviews through web scraping and sentiment analysis to identify key issues in the onboarding process, particularly those related to SMS OTP delivery. The analysis led to a proposed migration of OTP delivery from SMS to WhatsApp. In addition, cost calculations and simulations were developed to evaluate potential impacts on costs, activation success rates, savings, and break-even point (BEP).',
       tags: ['Sentiment Analysis', 'Web Scraping', 'Cost Analysis'],
       repositories: [
-        { name: 'Cost-Benefit Analysis', url: '#' },
-        { name: 'Sentiment Analysis Model', url: '#' },
+        { name: 'CBA Code', url: 'https://github.com/gadeeng/cba-bale-syariah' },
+        { name: 'Sentiment Model', url: '#' },
       ],
       webApps: [
-        { name: 'Dashboard', url: '#' },
+        { name: 'CBA Dashboard', url: 'https://balesyariah-cba.streamlit.app/'},  
+        { name: 'Sentiment App', url:'#'}
       ],
       images: [
-        { src: '/projects/bale-syariah/1.png', alt: 'Sentiment Analysis Dashboard' },
-        { src: '/projects/bale-syariah/2.png', alt: 'Cost-Benefit Analysis Results' },
-        { src: '/projects/bale-syariah/3.png', alt: 'Cost-Benefit Analysis Results' },
+        { src: '/projects_picts/bsn/1.jpg', alt: 'Project Title' },
+        { src: '/projects_picts/bsn/2.jpg', alt: 'Identification of problems' },
+        { src: '/projects_picts/bsn/3.jpg', alt: 'Implementation Timeline' },
+        { src: '/projects_picts/bsn/4.jpg', alt: 'Cost-Benefit Analysis Formula' },
+        { src: '/projects_picts/bsn/q.jpg', alt: 'Cost-Benefit Analysis Result' },
+        { src: '/projects_picts/bsn/6.jpg', alt: 'Limitations' },
+        { src: '/projects_picts/bsn/7.jpg', alt: 'Conclusion' },
+        { src: '/projects_picts/bsn/8.jpg', alt: 'Cost-Benefit Analysis Calculation Flowchart' },
+        { src: '/projects_picts/bsn/a.png', alt: 'Cost-Benefit Analysis Dashboard' },
+        { src: '/projects_picts/bsn/b.png', alt: 'Cost-Benefit Analysis Visualization' },
+        { src: '/projects_picts/bsn/d.png', alt: 'Sentiment Model (I have not deploy this model yet :D)' },
+        { src: '/projects_picts/bsn/c.png', alt: 'Sentiment Model (I have not deploy this model yet :D)' },
       ],
     },
     {
@@ -94,7 +104,7 @@ export default function ProjectsPage() {
       description: 'Developed a web-based survey portal for managing the Customer Satisfaction Index (CSI) and various internal survey requirements at PT Pelindo Daya Sejahtera.',
       tags: ['Web Development', 'Survey Management', 'CSI'],
       repositories: [
-        { name: 'Survey Portal Code', url: '#' },
+        { name: 'Survey Portal Code', url: 'https://github.com/gadeeng/survey-portal' },
       ],
       webApps: [
         { name: 'Survey Portal', url: 'https://surveypds.vercel.app' },
@@ -144,8 +154,14 @@ export default function ProjectsPage() {
         { name: 'Presentation', url: '#' },
       ],
       images: [
-        { src: '/projects/leslie-gower/1.png', alt: 'Phase Portrait Analysis' },
-        { src: '/projects/leslie-gower/2.png', alt: 'Equilibrium Points Visualization' },
+        { src: '/projects_picts/predator-prey/1.jpg', alt: 'Undergraduate Thesis' },
+        { src: '/projects_picts/predator-prey/2.jpg', alt: 'Background' },
+        { src: '/projects_picts/predator-prey/3.jpg', alt: 'Lotka-Volterra Model and Leslie-Gower Model' },
+        { src: '/projects_picts/predator-prey/4.jpg', alt: 'Research Method' },
+        { src: '/projects_picts/predator-prey/5.jpg', alt: 'Population Simulation and Phase Plane Simulation #1' },
+        { src: '/projects_picts/predator-prey/6.jpg', alt: 'Population Simulation and Phase Plane Simulation #2' },
+        { src: '/projects_picts/predator-prey/7.jpg', alt: 'Population Simulation and Phase Plane Simulation #3' },
+        { src: '/projects_picts/predator-prey/8.jpg', alt: 'Conclusion' },
       ],
     },
     {
@@ -155,14 +171,15 @@ export default function ProjectsPage() {
       description: 'Developed an end-to-end machine learning model to forecast food commodity prices across 34 provinces in Indonesia. An Extra Trees Regressor was trained on historical regional data to predict prices of major commodities such as rice, chili, and shallots.',
       tags: ['Machine Learning', 'Forecasting', 'Extra Trees'],
       repositories: [
-        { name: 'ML Model', url: '#' },
+        { name: 'ML Model', url: 'https://github.com/gadeeng/commodity-forecasting' },
       ],
       webApps: [
-        { name: 'Forecasting App', url: '#' },
+        { name: 'Forecasting App', url: 'https://commodityprice.streamlit.app/' },
       ],
       images: [
-        { src: '/projects/commodity-forecast/1.png', alt: 'Price Forecasting Dashboard' },
-        { src: '/projects/commodity-forecast/2.png', alt: 'Regional Price Comparison' },
+        { src: '/projects_picts/commodity/1.png', alt: 'Commodity and Region Menu' },
+        { src: '/projects_picts/commodity/2.png', alt: 'Summary Dashboard' },
+        { src: '/projects_picts/commodity/3.png', alt: 'Commodity Average Price Table'}
       ],
     },
     {
@@ -234,18 +251,6 @@ export default function ProjectsPage() {
 
       <div className="mx-auto w-full max-w-5xl px-6 pt-36 pb-20 sm:px-10">
 
-        {/* Back link */}
-        <Link
-          href="/"
-          className="focus-ring group mb-14 inline-flex items-center gap-2 text-sm text-foreground/50 transition-colors hover:text-[#e60012]"
-        >
-          <ArrowLeft
-            className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-0.5"
-            aria-hidden="true"
-          />
-          Home
-        </Link>
-
         {/* Page header */}
         <header className="mb-16 flex flex-col gap-5 sm:mb-24 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
           <div className="flex items-start gap-4">
@@ -255,7 +260,7 @@ export default function ProjectsPage() {
             </h1>
           </div>
           <p className="max-w-[30ch] text-sm leading-relaxed text-foreground/50 sm:pb-1.5">
-            A curated look at selected projects and work I&apos;m proud to have shipped.
+            A collection of projects I’ve worked on, built to solve problems and turn ideas into meaningful outcomes.
           </p>
         </header>
 
