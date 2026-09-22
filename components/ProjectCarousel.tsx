@@ -79,7 +79,11 @@ export default function ProjectCarousel({ name, images }: ProjectCarouselProps) 
             role="group"
             aria-roledescription="slide"
             aria-label={`${i + 1} of ${total}`}
-            className="relative aspect-[16/10] w-full shrink-0 snap-center"
+            className="relative w-full shrink-0 snap-center"
+            style={{
+              aspectRatio: 'auto',
+              minHeight: '400px',
+            }}
           >
             {failed[i] ? (
               <div className="flex h-full w-full items-center justify-center p-6 text-center text-sm text-foreground/35">
