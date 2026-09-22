@@ -91,7 +91,7 @@ export default function ProjectCarousel({ name, images }: ProjectCarouselProps) 
                 alt={img.alt}
                 fill
                 sizes="(min-width: 1024px) 720px, 100vw"
-                className="object-cover object-top"
+                className="object-contain object-center bg-foreground/5"
                 onError={() => setFailed((prev) => ({ ...prev, [i]: true }))}
               />
             )}

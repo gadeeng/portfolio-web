@@ -6,6 +6,45 @@ import { ArrowLeft, ArrowUpRight, X, AlertCircle } from 'lucide-react';
 import ConnectSection from '../../components/sections/ConnectSection';
 import ProjectCarousel from '../../components/ProjectCarousel';
 
+// ── Smooth popup animation styles ──────────────────────────────────
+const POPUP_STYLES = `
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0px);
+  }
+  to {
+    opacity: 1;
+    backdrop-filter: blur(4px);
+  }
+}
+
+@keyframes popupSlideUp {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.popup-backdrop {
+  animation: popupFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.popup-content {
+  animation: popupSlideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+`;
+
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.textContent = POPUP_STYLES;
+  document.head.appendChild(style);
+}
+
 export default function ProjectsPage() {
   const [showPopup, setShowPopup] = useState(false);
 
@@ -61,11 +100,11 @@ export default function ProjectsPage() {
         { name: 'Survey Portal', url: 'https://surveypds.vercel.app' },
       ],
       images: [
-        { src: '/projects_picts/pelindo/websurvey/1..png', alt: 'Survey Portal Dashboard' },
-        { src: '/projects_picts/pelindo/websurvey/2.png', alt: 'Survey Results Management' },
-        { src: '/projects_picts/pelindo/websurvey/3.png', alt: 'Survey Analytics' },
-        { src: '/projects_picts/pelindo/websurvey/4.png', alt: 'User Management' },
-        { src: '/projects_picts/pelindo/websurvey/5.png', alt: 'Report Generation' },
+        { src: '/projects_picts/pelindo/websurvey/1..png', alt: 'Login Page' },
+        { src: '/projects_picts/pelindo/websurvey/2.png', alt: 'List Survey Page' },
+        { src: '/projects_picts/pelindo/websurvey/3.png', alt: 'Survey Page' },
+        { src: '/projects_picts/pelindo/websurvey/4.png', alt: 'Survey Result Page' },
+        { src: '/projects_picts/pelindo/websurvey/5.png', alt: 'Create New Survey' },
       ],
     },
     {
@@ -151,8 +190,8 @@ export default function ProjectsPage() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Development Popup */}
       {showPopup && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
-          <div className="relative w-full max-w-md bg-background rounded-2xl border border-foreground/10 shadow-2xl p-8 animate-in zoom-in-95 duration-300">
+        <div className="popup-backdrop fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="popup-content relative w-full max-w-md bg-background rounded-2xl border border-foreground/10 shadow-2xl p-8">
             {/* Close button */}
             <button
               onClick={() => setShowPopup(false)}
