@@ -1,10 +1,51 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
+
+// ── Styles (Auto-injected, SSR-safe) ────────────────────────────────
+const TRANSITION_STYLES = `
+:root {
+  --navbar-pill-dur: 300ms;
+  --navbar-pill-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.navbar-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  background: currentColor;
+  opacity: 0.08;
+  border-radius: 9999px;
+  transform: translateX(0);
+  transition:
+    transform var(--navbar-pill-dur) var(--navbar-pill-ease),
+    width var(--navbar-pill-dur) var(--navbar-pill-ease);
+  will-change: transform, width;
+  z-index: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar-pill {
+    transition: none !important;
+  }
+}
+`;
+
+if (typeof document !== "undefined" && !document.getElementById("navbar-tabs-transition")) {
+  const style = document.createElement("style");
+  style.id = "navbar-tabs-transition";
+  style.textContent = TRANSITION_STYLES;
+  document.head.appendChild(style);
+}
+
+// ── Component ───────────────────────────────────────────────────────
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -14,10 +55,13 @@ const navItems = [
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [currentHash, setCurrentHash] = useState('');
   const [mounted, setMounted] = useState(false);
+  const pillRef = useRef<HTMLSpanElement>(null);
+  const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
     setMounted(true);
@@ -34,7 +78,7 @@ export default function Navbar() {
     };
   }, []);
 
-  const isActive = (href: string) => {
+  const isActive = useCallback((href: string) => {
     if (href === '/') {
       return pathname === '/' && (!currentHash || currentHash === '#hero');
     }
@@ -43,7 +87,69 @@ export default function Navbar() {
       return pathname === '/' && currentHash === targetHash;
     }
     return pathname === href || pathname.startsWith(`${href}/`);
-  };
+  }, [pathname, currentHash]);
+
+  // Move pill to active tab
+  const movePillTo = useCallback((element: HTMLAnchorElement | null, animate: boolean = true) => {
+    if (!element || !pillRef.current) return;
+
+    const pill = pillRef.current;
+    const left = element.offsetLeft;
+    const width = element.offsetWidth;
+
+    if (!animate) {
+      const prevTransition = pill.style.transition;
+      pill.style.transition = 'none';
+      pill.style.transform = `translateX(${left}px)`;
+      pill.style.width = `${width}px`;
+      void pill.offsetWidth; // Force reflow
+      pill.style.transition = prevTransition;
+    } else {
+      pill.style.transform = `translateX(${left}px)`;
+      pill.style.width = `${width}px`;
+    }
+  }, []);
+
+  // Initial pill position on mount (no animation)
+  useEffect(() => {
+    if (mounted && pillRef.current && navRefs.current.length > 0) {
+      const activeIndex = navItems.findIndex((item) => isActive(item.href));
+      if (activeIndex !== -1 && navRefs.current[activeIndex]) {
+        requestAnimationFrame(() => {
+          movePillTo(navRefs.current[activeIndex], false);
+        });
+      }
+    }
+  }, [mounted, isActive, movePillTo]);
+
+  // Update pill position when active tab changes
+  useEffect(() => {
+    if (!mounted) return;
+    
+    const activeIndex = navItems.findIndex((item) => isActive(item.href));
+    
+    if (activeIndex !== -1 && navRefs.current[activeIndex]) {
+      // Small delay to ensure DOM is ready after navigation
+      const id = setTimeout(() => {
+        movePillTo(navRefs.current[activeIndex], true); // Use true for animated transition
+      }, 50);
+      return () => clearTimeout(id);
+    }
+  }, [pathname, currentHash, mounted, isActive, movePillTo]);
+
+  // Handle resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (!mounted) return;
+      const activeIndex = navItems.findIndex((item) => isActive(item.href));
+      if (activeIndex !== -1 && navRefs.current[activeIndex]) {
+        movePillTo(navRefs.current[activeIndex], false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [mounted, isActive, movePillTo]);
 
   return (
     <nav
@@ -55,32 +161,43 @@ export default function Navbar() {
           scrolled ? 'shadow-md' : 'shadow-sm'
         }`}
       >
-        <ul className="relative flex items-center gap-0.5 sm:gap-1">
-          {navItems.map((item) => (
-            <li key={item.href} className="relative">
-              <Link
-                href={item.href}
-                onClick={() => {
-                  if (item.href.includes('#')) {
-                    setCurrentHash(item.href.substring(item.href.indexOf('#')));
-                  } else {
-                    setCurrentHash('');
-                  }
-                }}
-                className={`focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-300 sm:px-4 sm:text-sm ${
-                  isActive(item.href)
-                    ? 'text-foreground'
-                    : 'text-foreground/60 hover:text-foreground'
-                }`}
-              >
-                {isActive(item.href) && (
-                  <span className="absolute inset-0 rounded-full bg-foreground/8" />
-                )}
-                <span className="relative z-10">{item.label}</span>
-              </Link>
-            </li>
+        <div className="relative flex items-center gap-0.5 sm:gap-1">
+          {/* Sliding pill indicator */}
+          <span
+            ref={pillRef}
+            className="navbar-pill"
+            aria-hidden="true"
+            style={{ color: 'var(--foreground)' }}
+          />
+
+          {navItems.map((item, index) => (
+            <Link
+              key={item.href}
+              ref={(el) => {
+                navRefs.current[index] = el;
+              }}
+              href={item.href}
+              onClick={() => {
+                if (item.href.includes('#')) {
+                  setCurrentHash(item.href.substring(item.href.indexOf('#')));
+                } else {
+                  setCurrentHash('');
+                }
+                // Immediate pill animation on click
+                if (navRefs.current[index]) {
+                  movePillTo(navRefs.current[index], true);
+                }
+              }}
+              className={`focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-300 sm:px-4 sm:text-sm z-10 ${
+                isActive(item.href)
+                  ? 'text-foreground'
+                  : 'text-foreground/60 hover:text-foreground'
+              }`}
+            >
+              <span className="relative z-10">{item.label}</span>
+            </Link>
           ))}
-        </ul>
+        </div>
 
         {/* Subtle separator */}
         <div className="mx-1 h-4 w-[1px] bg-foreground/12" aria-hidden="true" />

@@ -1,15 +1,18 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, X, AlertCircle } from 'lucide-react';
 import ConnectSection from '../../components/sections/ConnectSection';
 import ProjectCarousel from '../../components/ProjectCarousel';
 
-export const metadata = {
-  title: 'Projects | Portfolio',
-  description: 'A curated look at selected projects and work I\'m proud to have shipped.',
-};
-
 export default function ProjectsPage() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    // Tampilkan popup setelah komponen dimount
+    setShowPopup(true);
+  }, []);
   const projects = [
     {
       name: 'Strategy to Increase Third-Party Funds by Optimizing BSN Customer/Prospective Customer Onboarding on the Bale Syariah App',
@@ -27,6 +30,7 @@ export default function ProjectsPage() {
       images: [
         { src: '/projects/bale-syariah/1.png', alt: 'Sentiment Analysis Dashboard' },
         { src: '/projects/bale-syariah/2.png', alt: 'Cost-Benefit Analysis Results' },
+        { src: '/projects/bale-syariah/3.png', alt: 'Cost-Benefit Analysis Results' },
       ],
     },
     {
@@ -54,11 +58,14 @@ export default function ProjectsPage() {
         { name: 'Survey Portal Code', url: '#' },
       ],
       webApps: [
-        { name: 'Survey Portal', url: '#' },
+        { name: 'Survey Portal', url: 'https://surveypds.vercel.app' },
       ],
       images: [
-        { src: '/projects/pelindo-survey/1.png', alt: 'Survey Portal Dashboard' },
-        { src: '/projects/pelindo-survey/2.png', alt: 'Survey Results Management' },
+        { src: '/projects_picts/pelindo/websurvey/1..png', alt: 'Survey Portal Dashboard' },
+        { src: '/projects_picts/pelindo/websurvey/2.png', alt: 'Survey Results Management' },
+        { src: '/projects_picts/pelindo/websurvey/3.png', alt: 'Survey Analytics' },
+        { src: '/projects_picts/pelindo/websurvey/4.png', alt: 'User Management' },
+        { src: '/projects_picts/pelindo/websurvey/5.png', alt: 'Report Generation' },
       ],
     },
     {
@@ -142,6 +149,50 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* Development Popup */}
+      {showPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+          <div className="relative w-full max-w-md bg-background rounded-2xl border border-foreground/10 shadow-2xl p-8 animate-in zoom-in-95 duration-300">
+            {/* Close button */}
+            <button
+              onClick={() => setShowPopup(false)}
+              className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full bg-foreground/5 text-foreground/50 transition-all duration-200 hover:bg-foreground/10 hover:text-foreground hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-500/50"
+              aria-label="Close popup"
+            >
+              <X className="h-4 w-4" />
+            </button>
+
+            {/* Icon */}
+            <div className="mb-6 flex justify-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-amber-500/10 text-amber-500">
+                <AlertCircle className="h-8 w-8" />
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="text-center space-y-4">
+              <h2 className="text-2xl font-bold text-foreground">
+                🚧 Under Development
+              </h2>
+              <p className="text-sm leading-relaxed text-foreground/65">
+                This page is currently under development. The projects showcased here are still being polished and some links may not be fully functional yet.
+              </p>
+              <p className="text-xs text-foreground/50">
+                Thank you for your patience! 🙏
+              </p>
+            </div>
+
+            {/* Action button */}
+            <button
+              onClick={() => setShowPopup(false)}
+              className="mt-6 w-full rounded-full bg-red-500 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-red-600 active:scale-[0.98] shadow-sm hover:shadow-md"
+            >
+              Got it!
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="mx-auto w-full max-w-5xl px-6 pt-36 pb-20 sm:px-10">
 
         {/* Back link */}
