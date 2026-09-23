@@ -64,8 +64,8 @@ export default function ProjectsPage() {
         { name: 'Sentiment Model', url: '#' },
       ],
       webApps: [
-        { name: 'CBA Dashboard', url: 'https://balesyariah-cba.streamlit.app/'},  
-        { name: 'Sentiment App', url:'#'}
+        { name: 'CBA Dashboard', url: 'https://balesyariah-cba.streamlit.app/' },
+        { name: 'Sentiment App', url: '#' }
       ],
       images: [
         { src: '/projects_picts/bsn/1.jpg', alt: 'Project Title' },
@@ -93,8 +93,10 @@ export default function ProjectsPage() {
         { name: 'Analysis Portal', url: '#' },
       ],
       images: [
-        { src: '/projects/pelindo-quality/1.png', alt: 'SERVQUAL Framework Analysis' },
-        { src: '/projects/pelindo-quality/2.png', alt: 'Gap Analysis Results' },
+        { src: '/projects_picts/pelindo/surveyAnalysis/1.png', alt: 'Overview Tab' },
+        { src: '/projects_picts/pelindo/surveyAnalysis/2.png', alt: 'Pain Points' },
+        { src: '/projects_picts/pelindo/surveyAnalysis/3.png', alt: 'Gain Points' },
+        { src: '/projects_picts/pelindo/surveyAnalysis/4.png', alt: 'Comparation Tab' },
       ],
     },
     {
@@ -110,7 +112,7 @@ export default function ProjectsPage() {
         { name: 'Survey Portal', url: 'https://surveypds.vercel.app' },
       ],
       images: [
-        { src: '/projects_picts/pelindo/websurvey/1..png', alt: 'Login Page' },
+        { src: '/projects_picts/pelindo/websurvey/1.png', alt: 'Login Page' },
         { src: '/projects_picts/pelindo/websurvey/2.png', alt: 'List Survey Page' },
         { src: '/projects_picts/pelindo/websurvey/3.png', alt: 'Survey Page' },
         { src: '/projects_picts/pelindo/websurvey/4.png', alt: 'Survey Result Page' },
@@ -179,22 +181,7 @@ export default function ProjectsPage() {
       images: [
         { src: '/projects_picts/commodity/1.png', alt: 'Commodity and Region Menu' },
         { src: '/projects_picts/commodity/2.png', alt: 'Summary Dashboard' },
-        { src: '/projects_picts/commodity/3.png', alt: 'Commodity Average Price Table'}
-      ],
-    },
-    {
-      name: 'Leveraging Topic Modeling Using BERTopic with HBDSAN Algorithm',
-      role: 'Data Scientist',
-      year: '2024',
-      description: 'Developed this project as an extension of our submission to Hology 7.0, a national-level data mining competition organized by Universitas Brawijaya. The project applied topic modeling to large-scale e-commerce product data to identify hidden patterns and topics, which were then used as the foundation for developing a smart system to improve the user experience.',
-      tags: ['Topic Modeling', 'BERTopic', 'E-Commerce'],
-      repositories: [
-        { name: 'BERTopic Implementation', url: '#' },
-      ],
-      webApps: [],
-      images: [
-        { src: '/projects/beropic-topics/1.png', alt: 'Topic Distribution Visualization' },
-        { src: '/projects/beropic-topics/2.png', alt: 'Product Recommendations System' },
+        { src: '/projects_picts/commodity/3.png', alt: 'Commodity Average Price Table' }
       ],
     },
   ];
