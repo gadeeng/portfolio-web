@@ -19,9 +19,23 @@ const competencies = [
   { label: 'Optimization', kanji: '最適' },
 ];
 
+// Deteksi mobile sekali saat mount — mengurangi WebGL overhead di layar kecil
+function useMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 767px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return isMobile;
+}
+
 export default function HeroSection() {
   const { theme } = useTheme();
   const isLight = theme === 'light';
+  const isMobile = useMobile();
 
   // Direct DOM attribute mutation — no setState re-render, zero lag on refresh
   const sectionRef = useRef<HTMLElement>(null);
@@ -75,12 +89,12 @@ export default function HeroSection() {
           <Galaxy
             transparent={true}
             lightMode={isLight}
-            density={isLight ? 0.55 : 0.9}
-            glowIntensity={isLight ? 0.15 : 0.3}
-            twinkleIntensity={isLight ? 0.25 : 0.4}
+            density={isMobile ? 0.4 : (isLight ? 0.55 : 0.9)}
+            glowIntensity={isMobile ? 0.1 : (isLight ? 0.15 : 0.3)}
+            twinkleIntensity={isMobile ? 0.15 : (isLight ? 0.25 : 0.4)}
             starSpeed={0.3}
-            speed={0.4}
-            rotationSpeed={0.02}
+            speed={isMobile ? 0.2 : 0.4}
+            rotationSpeed={isMobile ? 0.01 : 0.02}
             mouseInteraction={false}
           />
         </div>
@@ -89,7 +103,7 @@ export default function HeroSection() {
         <div
           className="absolute inset-0"
           style={{
-            opacity: isLight ? 0.45 : 0.85,
+            opacity: isMobile ? 0.5 : (isLight ? 0.45 : 0.85),
             mixBlendMode: 'screen',
             transition: 'opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)',
           }}
@@ -97,16 +111,16 @@ export default function HeroSection() {
           <LightRays
             raysOrigin="top-center"
             raysColor={isLight ? '#f87171' : '#ef4444'}
-            intensity={isLight ? 0.45 : 0.85}
-            raysSpeed={0.8}
+            intensity={isMobile ? 0.5 : (isLight ? 0.45 : 0.85)}
+            raysSpeed={isMobile ? 0.4 : 0.8}
             lightSpread={0.9}
-            rayLength={2.0}
+            rayLength={isMobile ? 1.2 : 2.0}
             pulsating={false}
             fadeDistance={1.2}
             saturation={1.1}
             followMouse={false}
             noiseAmount={0.02}
-            distortion={0.3}
+            distortion={isMobile ? 0.15 : 0.3}
             lightMode={false}
           />
         </div>
@@ -272,19 +286,8 @@ export default function HeroSection() {
               />
             </div>
 
-            {/*
-              ─────────────────────────────────────────────────────────────
-              LANYARD SIZE CONTROLS — adjust these to resize the card:
-              ─────────────────────────────────────────────────────────────
-              • Container height: h-[380px] sm:h-[420px] md:h-[460px] lg:h-[500px]
-                → Controls the physical canvas height in the layout
-              • max-w-[400px]: Maximum container width
-              • cardScale={2.35}: 3D card model scale
-              • fov={18}: Camera field-of-view
-              • position={[0, 0.35, 12.5]}: Camera position [x, y, z]
-              ─────────────────────────────────────────────────────────────
-            */}
-            <div className="relative h-[380px] sm:h-[420px] md:h-[460px] lg:h-[500px] w-full max-w-[400px]">
+            {/* Lanyard container — lebih kecil di mobile agar tidak overflow */}
+            <div className="relative h-[300px] sm:h-[420px] md:h-[460px] lg:h-[500px] w-full max-w-[320px] sm:max-w-[400px]">
               <Lanyard
                 position={[0, -0.05, 11.8]}
                 gravity={[0, -40, 0]}
@@ -292,7 +295,7 @@ export default function HeroSection() {
                 transparent={true}
                 anchorPosition={[0, 3.7, 0]}
                 jointDistance={0.88}
-                cardScale={2.65}
+                cardScale={isMobile ? 2.0 : 2.65}
                 frontImage="/Lanyard%20Pics.webp"
                 backImage="/Lanyard%20Pics.webp"
                 imageFit="cover"
@@ -305,7 +308,7 @@ export default function HeroSection() {
         <div className="mt-12 flex items-center gap-4 hero-name-animate hero-name-animate-3" aria-hidden="true">
           <div className="h-[1px] w-8 bg-[#e60012]/40" />
           <span className="text-[9px] font-mono tracking-[0.3em] text-foreground/20 uppercase">
-            Portfolio · 2024
+            Portfolio · 2026
           </span>
           <div className="h-[1px] flex-1 bg-foreground/8" />
           <span className="text-[9px] font-mono tracking-[0.3em] text-foreground/20 uppercase">

@@ -1,49 +1,11 @@
 'use client';
 
+// Styles dikelola di globals.css — tidak perlu injeksi runtime
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowUpRight, X, AlertCircle } from 'lucide-react';
+import { ArrowUpRight, X, AlertCircle } from 'lucide-react';
 import ConnectSection from '../../components/sections/ConnectSection';
 import ProjectCarousel from '../../components/ProjectCarousel';
-
-// ── Smooth popup animation styles ──────────────────────────────────
-const POPUP_STYLES = `
-@keyframes popupFadeIn {
-  from {
-    opacity: 0;
-    backdrop-filter: blur(0px);
-  }
-  to {
-    opacity: 1;
-    backdrop-filter: blur(4px);
-  }
-}
-
-@keyframes popupSlideUp {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.popup-backdrop {
-  animation: popupFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.popup-content {
-  animation: popupSlideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-`;
-
-if (typeof document !== "undefined") {
-  const style = document.createElement("style");
-  style.textContent = POPUP_STYLES;
-  document.head.appendChild(style);
-}
 
 export default function ProjectsPage() {
   const [showPopup, setShowPopup] = useState(false);
@@ -236,17 +198,17 @@ export default function ProjectsPage() {
         </div>
       )}
 
-      <div className="mx-auto w-full max-w-5xl px-6 pt-36 pb-20 sm:px-10">
+      <div className="mx-auto w-full max-w-5xl px-5 pt-24 pb-16 sm:px-10 sm:pt-36 sm:pb-20">
 
         {/* Page header */}
-        <header className="mb-16 flex flex-col gap-5 sm:mb-24 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
+        <header className="mb-12 flex flex-col gap-4 sm:mb-24 sm:flex-row sm:items-end sm:justify-between sm:gap-12">
           <div className="flex items-start gap-4">
             <div className="h-[3.5rem] w-[2px] bg-[#e60012]" aria-hidden="true" />
-            <h1 className="text-5xl font-semibold leading-[0.95] tracking-tight text-foreground sm:text-7xl">
+            <h1 className="text-4xl sm:text-5xl lg:text-7xl font-semibold leading-[0.95] tracking-tight text-foreground">
               Projects
             </h1>
           </div>
-          <p className="max-w-[30ch] text-sm leading-relaxed text-foreground/50 sm:pb-1.5">
+          <p className="max-w-[38ch] sm:max-w-[30ch] text-sm leading-relaxed text-foreground/50 sm:pb-1.5">
             A collection of projects I’ve worked on, built to solve problems and turn ideas into meaningful outcomes.
           </p>
         </header>
@@ -256,19 +218,24 @@ export default function ProjectsPage() {
           {projects.map((proj) => (
             <article
               key={proj.name}
-              className="group grid gap-x-10 gap-y-4 py-10 sm:grid-cols-[6rem_1fr] sm:py-12"
+              className="group grid gap-x-8 gap-y-3 py-8 sm:grid-cols-[5rem_1fr] sm:gap-x-10 sm:py-12"
             >
-              {/* Tahun */}
+              {/* Tahun — hidden di mobile, tampil di kiri desktop */}
               <time
                 dateTime={proj.year}
-                className="text-sm tabular-nums text-foreground/40 sm:pt-3"
+                className="hidden text-sm tabular-nums text-foreground/40 sm:block sm:pt-3"
               >
                 {proj.year}
               </time>
 
-              <div className="flex min-w-0 flex-col gap-5">
-                {/* Nama proyek */}
-                <h2 className="text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-5xl">
+              <div className="flex min-w-0 flex-col gap-4">
+                {/* Nama proyek + tahun inline di mobile */}
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <time dateTime={proj.year} className="text-sm tabular-nums text-foreground/40 sm:hidden">
+                    {proj.year}
+                  </time>
+                </div>
+                <h2 className="text-2xl font-semibold leading-[1.15] tracking-tight text-foreground sm:text-3xl lg:text-5xl">
                   <span
                     className="bg-[linear-gradient(#e60012,#e60012)] bg-[length:0%_2px] bg-[position:0_100%] bg-no-repeat pb-1 transition-[background-size] duration-500 ease-out [-webkit-box-decoration-break:clone] [box-decoration-break:clone] group-hover:bg-[length:100%_2px] group-focus-within:bg-[length:100%_2px] motion-reduce:transition-none"
                   >

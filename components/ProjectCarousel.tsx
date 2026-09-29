@@ -81,8 +81,9 @@ export default function ProjectCarousel({ name, images }: ProjectCarouselProps) 
             aria-label={`${i + 1} of ${total}`}
             className="relative w-full shrink-0 snap-center"
             style={{
-              aspectRatio: 'auto',
-              minHeight: '400px',
+              // Responsive height: lebih pendek di mobile
+              aspectRatio: '16/9',
+              minHeight: 'clamp(200px, 45vw, 480px)',
             }}
           >
             {failed[i] ? (

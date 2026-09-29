@@ -1,49 +1,11 @@
 'use client';
 
+// Navbar pill styles dikelola di globals.css
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
-
-// ── Styles (Auto-injected, SSR-safe) ────────────────────────────────
-const TRANSITION_STYLES = `
-:root {
-  --navbar-pill-dur: 300ms;
-  --navbar-pill-ease: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.navbar-pill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 0;
-  background: currentColor;
-  opacity: 0.08;
-  border-radius: 9999px;
-  transform: translateX(0);
-  transition:
-    transform var(--navbar-pill-dur) var(--navbar-pill-ease),
-    width var(--navbar-pill-dur) var(--navbar-pill-ease);
-  will-change: transform, width;
-  z-index: 0;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .navbar-pill {
-    transition: none !important;
-  }
-}
-`;
-
-if (typeof document !== "undefined" && !document.getElementById("navbar-tabs-transition")) {
-  const style = document.createElement("style");
-  style.id = "navbar-tabs-transition";
-  style.textContent = TRANSITION_STYLES;
-  document.head.appendChild(style);
-}
 
 // ── Component ───────────────────────────────────────────────────────
 
@@ -120,20 +82,19 @@ export default function Navbar() {
         });
       }
     }
-  }, [mounted, isActive, movePillTo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mounted]);
 
-  // Update pill position when active tab changes
+  // Update pill position when active tab changes (smooth glide)
   useEffect(() => {
     if (!mounted) return;
     
     const activeIndex = navItems.findIndex((item) => isActive(item.href));
     
     if (activeIndex !== -1 && navRefs.current[activeIndex]) {
-      // Small delay to ensure DOM is ready after navigation
-      const id = setTimeout(() => {
-        movePillTo(navRefs.current[activeIndex], true); // Use true for animated transition
-      }, 50);
-      return () => clearTimeout(id);
+      requestAnimationFrame(() => {
+        movePillTo(navRefs.current[activeIndex], true);
+      });
     }
   }, [pathname, currentHash, mounted, isActive, movePillTo]);
 
@@ -154,14 +115,14 @@ export default function Navbar() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed left-1/2 top-5 z-50 -translate-x-1/2"
+      className="fixed left-1/2 top-5 sm:top-6 z-50 -translate-x-1/2 transition-transform duration-200"
     >
       <div
-        className={`flex items-center gap-1 rounded-full p-1.5 border border-foreground/8 bg-background/85 backdrop-blur-md transition-all duration-300 ${
+        className={`flex items-center gap-0.5 sm:gap-1 rounded-full px-1.5 py-1 border border-foreground/8 bg-background/85 backdrop-blur-md transition-all duration-300 ${
           scrolled ? 'shadow-md' : 'shadow-sm'
         }`}
       >
-        <div className="relative flex items-center gap-0.5 sm:gap-1">
+        <div className="relative flex items-center gap-0.5">
           {/* Sliding pill indicator */}
           <span
             ref={pillRef}
@@ -177,6 +138,7 @@ export default function Navbar() {
                 navRefs.current[index] = el;
               }}
               href={item.href}
+              prefetch={true}
               onClick={() => {
                 if (item.href.includes('#')) {
                   setCurrentHash(item.href.substring(item.href.indexOf('#')));
@@ -188,7 +150,7 @@ export default function Navbar() {
                   movePillTo(navRefs.current[index], true);
                 }
               }}
-              className={`focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-300 sm:px-4 sm:text-sm z-10 ${
+              className={`focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1 text-xs font-medium transition-colors duration-200 sm:px-3.5 sm:py-1 sm:text-[13px] z-10 ${ 
                 isActive(item.href)
                   ? 'text-foreground'
                   : 'text-foreground/60 hover:text-foreground'
@@ -200,7 +162,7 @@ export default function Navbar() {
         </div>
 
         {/* Subtle separator */}
-        <div className="mx-1 h-4 w-[1px] bg-foreground/12" aria-hidden="true" />
+        <div className="mx-0.5 h-3.5 w-[1px] bg-foreground/12" aria-hidden="true" />
 
         {/* Dark / Light Mode Switch Button */}
         <button
@@ -208,16 +170,16 @@ export default function Navbar() {
           onClick={toggleTheme}
           aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          className="focus-ring relative inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-foreground/6 hover:text-foreground active:scale-95"
+          className="focus-ring relative inline-flex h-7 w-7 sm:h-7.5 sm:w-7.5 cursor-pointer items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-foreground/6 hover:text-foreground active:scale-95"
         >
           {mounted ? (
             theme === 'dark' ? (
-              <Sun className="h-4 w-4 transition-transform duration-300 hover:rotate-45" />
+              <Sun className="h-3.5 w-3.5 transition-transform duration-300 hover:rotate-45" />
             ) : (
-              <Moon className="h-4 w-4 transition-transform duration-300 hover:-rotate-12" />
+              <Moon className="h-3.5 w-3.5 transition-transform duration-300 hover:-rotate-12" />
             )
           ) : (
-            <span className="h-4 w-4" />
+            <span className="h-3.5 w-3.5" />
           )}
         </button>
       </div>

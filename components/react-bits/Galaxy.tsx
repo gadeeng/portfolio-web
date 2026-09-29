@@ -225,13 +225,23 @@ export default function Galaxy({
   const smoothMousePos = useRef({ x: 0.5, y: 0.5 });
   const targetMouseActive = useRef(0.0);
   const smoothMouseActive = useRef(0.0);
+  // Ref untuk update lightMode tanpa rebuild WebGL
+  const lightModeRef = useRef(lightMode);
+
+  // Sync lightMode ke ref tanpa rebuild WebGL context
+  useEffect(() => {
+    lightModeRef.current = lightMode;
+  }, [lightMode]);
 
   useEffect(() => {
     if (!ctnDom.current) return;
     const ctn = ctnDom.current;
+    // Cap pixel ratio — mobile bisa 3x, tapi 1.5x sudah cukup tajam
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const renderer = new Renderer({
       alpha: transparent,
-      premultipliedAlpha: false
+      premultipliedAlpha: false,
+      dpr,
     });
     const gl = renderer.gl;
 
@@ -295,12 +305,23 @@ export default function Galaxy({
 
     const mesh = new Mesh(gl, { geometry, program });
     let animateId: number;
+    let isVisible = true;
+
+    // Pause rAF saat off-screen — penting untuk mobile (scroll hemat baterai)
+    const observer = new IntersectionObserver(
+      (entries) => { isVisible = entries[0]?.isIntersecting ?? true; },
+      { threshold: 0.01 }
+    );
+    observer.observe(ctn);
 
     function update(t: number) {
       animateId = requestAnimationFrame(update);
+      if (!isVisible) return; // Skip render saat off-screen
       if (!disableAnimation) {
         program.uniforms.uTime.value = t * 0.001;
         program.uniforms.uStarSpeed.value = (t * 0.001 * starSpeed) / 10.0;
+        // Update lightMode uniform setiap frame dari ref — tidak perlu rebuild WebGL
+        program.uniforms.uLightMode.value = lightModeRef.current ? 1 : 0;
       }
 
       if (mouseInteraction) {
@@ -338,6 +359,7 @@ export default function Galaxy({
 
     return () => {
       cancelAnimationFrame(animateId);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       if (mouseInteraction) {
         ctn.removeEventListener('mousemove', handleMouseMove);
@@ -365,7 +387,7 @@ export default function Galaxy({
     repulsionStrength,
     autoCenterRepulsion,
     transparent,
-    lightMode
+    // lightMode TIDAK ada di sini — diupdate via lightModeRef setiap frame
   ]);
 
   return <div ref={ctnDom} className={`galaxy-container ${className}`} {...rest} />;
