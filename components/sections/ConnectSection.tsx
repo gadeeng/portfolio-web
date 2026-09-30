@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Mail } from 'lucide-react';
 import { LinkedinIcon, GithubIcon } from '../icons';
 import { useScrollReveal } from '../../lib/useScrollReveal';
+import PatternWaves from '@/components/PatternWaves';
 
 export default function ConnectSection() {
   const sectionRef = useScrollReveal<HTMLElement>({ threshold: 0.1 });
@@ -36,23 +37,38 @@ export default function ConnectSection() {
       {/* ── Two-panel card ───────────────────────────────────────────── */}
       <div
         data-reveal
-        className="reveal card-hover-lift grid md:grid-cols-2 overflow-hidden rounded-2xl border border-red-500/10 bg-foreground/[0.03] shadow-sm hover:shadow-md hover:border-red-500/20 transition-all duration-300"
+        className="reveal card-hover-lift grid md:grid-cols-5 overflow-hidden rounded-2xl border border-red-500/10 bg-foreground/[0.03] shadow-sm hover:shadow-md hover:border-red-500/20 transition-all duration-300"
       >
 
         {/* LEFT — Headline + CTA */}
-        <div className="flex flex-col justify-between gap-10 p-8 sm:p-10">
-          <div>
+        <div className="relative overflow-hidden flex flex-col justify-between gap-10 p-8 sm:p-10 md:col-span-3">
+          {/* Background Pattern Waves */}
+          <div className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-25">
+            <PatternWaves
+              preset="terminal"
+              wave="silk"
+              characters="asymptomate"
+              color="#ef4444"
+              backgroundColor="transparent"
+              opacity={1}
+              speed={0.3}
+              fade="edges"
+              fadeSize={0.5}
+            />
+          </div>
+
+          <div className="relative z-10">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground leading-[1.15] mb-5">
               Let&apos;s <span className="text-red-500">Connect!</span>
             </h2>
-            <p className="text-sm sm:text-base text-foreground/55 leading-relaxed max-w-sm">
+            <p className="text-sm sm:text-base text-foreground/55 leading-relaxed max-w-md">
               I&apos;m always open to discussing new projects, creative ideas, or
               opportunities to be part of your visions. Just reach out!
             </p>
           </div>
 
           {/* CTA row */}
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="relative z-10 flex flex-wrap items-center gap-4">
             {/* Contact — filled pill, lebar teks dianimasikan dari "Contact" ke email */}
             <a
               href="mailto:gadingkusuma.works@gmail.com"
@@ -60,9 +76,9 @@ export default function ConnectSection() {
               style={
                 widths
                   ? ({
-                      '--contact-w': `${widths.contact}px`,
-                      '--email-w': `${widths.email}px`,
-                    } as React.CSSProperties)
+                    '--contact-w': `${widths.contact}px`,
+                    '--email-w': `${widths.email}px`,
+                  } as React.CSSProperties)
                   : undefined
               }
               className="group inline-flex max-w-full items-center gap-2 rounded-full bg-red-500 text-white px-5 py-2.5 text-sm font-semibold transition-all duration-300 hover:bg-red-600 active:scale-[0.97] shadow-sm hover:shadow-md"
@@ -119,7 +135,7 @@ export default function ConnectSection() {
         </div>
 
         {/* RIGHT — Social icons + copyright (lighter panel) */}
-        <div className="flex flex-col items-center justify-center gap-6 border-t md:border-t-0 md:border-l border-foreground/8 bg-foreground/[0.02] p-8 sm:p-10">
+        <div className="flex flex-col items-center justify-center gap-6 border-t md:border-t-0 md:border-l border-foreground/8 bg-foreground/[0.02] p-8 sm:p-10 md:col-span-2">
           {/* Social icons */}
           <div className="flex items-center gap-5">
             {/* Email - Yellow Neon */}
