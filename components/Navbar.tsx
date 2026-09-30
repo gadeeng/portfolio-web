@@ -1,33 +1,65 @@
 'use client';
 
 // Navbar pill styles dikelola di globals.css
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 
 // ── Component ───────────────────────────────────────────────────────
 
-const navItems = [
-  { label: 'Home', href: '/' },
-  { label: 'Projects', href: '/projects' },
-  { label: 'Connect', href: '/#connect' },
-];
-
 export default function Navbar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [currentHash, setCurrentHash] = useState('');
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
   const pillRef = useRef<HTMLSpanElement>(null);
   const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+  const isFirstRender = useRef(true);
+
+  // Dynamically target the Connect section on the active page
+  const connectHref = pathname.startsWith('/projects') ? '/projects#connect' : '/#connect';
+
+  const navItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Projects', href: '/projects' },
+    { label: 'Connect', href: connectHref },
+  ];
+
+  // Active tab index: 0 = Home, 1 = Projects, 2 = Connect
+  const activeIndex = useMemo(() => {
+    if (currentHash === '#connect') return 2;
+    if (pathname.startsWith('/projects')) return 1;
+    return 0;
+  }, [currentHash, pathname]);
 
   useEffect(() => {
-    setMounted(true);
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      // Detect if Connect section is in view
+      const connectEl = document.getElementById('connect');
+      if (connectEl) {
+        const rect = connectEl.getBoundingClientRect();
+        const isNearBottom =
+          window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 150;
+        if ((rect.top <= 350 && rect.bottom >= 150) || isNearBottom) {
+          setCurrentHash('#connect');
+          return;
+        }
+      }
+
+      if (window.scrollY < 200) {
+        setCurrentHash('');
+      }
+    };
+
     const onHashChange = () => setCurrentHash(window.location.hash);
 
     onHashChange();
@@ -39,17 +71,6 @@ export default function Navbar() {
       window.removeEventListener('hashchange', onHashChange);
     };
   }, []);
-
-  const isActive = useCallback((href: string) => {
-    if (href === '/') {
-      return pathname === '/' && (!currentHash || currentHash === '#hero');
-    }
-    if (href.startsWith('/#')) {
-      const targetHash = href.replace('/', '');
-      return pathname === '/' && currentHash === targetHash;
-    }
-    return pathname === href || pathname.startsWith(`${href}/`);
-  }, [pathname, currentHash]);
 
   // Move pill to active tab
   const movePillTo = useCallback((element: HTMLAnchorElement | null, animate: boolean = true) => {
@@ -72,45 +93,70 @@ export default function Navbar() {
     }
   }, []);
 
-  // Initial pill position on mount (no animation)
-  useEffect(() => {
-    if (mounted && pillRef.current && navRefs.current.length > 0) {
-      const activeIndex = navItems.findIndex((item) => isActive(item.href));
-      if (activeIndex !== -1 && navRefs.current[activeIndex]) {
-        requestAnimationFrame(() => {
-          movePillTo(navRefs.current[activeIndex], false);
-        });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mounted]);
-
-  // Update pill position when active tab changes (smooth glide)
+  // Update pill position when active tab changes, on mount, or on window resize
   useEffect(() => {
     if (!mounted) return;
-    
-    const activeIndex = navItems.findIndex((item) => isActive(item.href));
-    
-    if (activeIndex !== -1 && navRefs.current[activeIndex]) {
-      requestAnimationFrame(() => {
-        movePillTo(navRefs.current[activeIndex], true);
-      });
-    }
-  }, [pathname, currentHash, mounted, isActive, movePillTo]);
 
-  // Handle resize
-  useEffect(() => {
+    const targetEl = navRefs.current[activeIndex];
+    if (targetEl) {
+      const animate = !isFirstRender.current;
+      requestAnimationFrame(() => {
+        movePillTo(targetEl, animate);
+      });
+      isFirstRender.current = false;
+    }
+
     const handleResize = () => {
-      if (!mounted) return;
-      const activeIndex = navItems.findIndex((item) => isActive(item.href));
-      if (activeIndex !== -1 && navRefs.current[activeIndex]) {
+      if (navRefs.current[activeIndex]) {
         movePillTo(navRefs.current[activeIndex], false);
       }
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [mounted, isActive, movePillTo]);
+  }, [mounted, activeIndex, movePillTo]);
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+    index: number
+  ) => {
+    if (href.includes('#')) {
+      const hash = href.substring(href.indexOf('#'));
+      setCurrentHash(hash);
+
+      const targetPath = href.split('#')[0] || '/';
+      const currentPath = pathname.startsWith('/projects') ? '/projects' : '/';
+      const isSamePage = targetPath === currentPath;
+
+      if (isSamePage) {
+        e.preventDefault();
+        const element = document.getElementById(hash.replace('#', ''));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+          window.history.pushState(null, '', href);
+        }
+      }
+    } else {
+      setCurrentHash('');
+      // If clicking Home while on Home, smooth scroll to top
+      if (href === '/' && pathname === '/') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.history.pushState(null, '', '/');
+      }
+      // If clicking Projects while on Projects, smooth scroll to top
+      if (href === '/projects' && pathname === '/projects') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.history.pushState(null, '', '/projects');
+      }
+    }
+
+    if (navRefs.current[index]) {
+      movePillTo(navRefs.current[index], true);
+    }
+  };
 
   return (
     <nav
@@ -133,25 +179,15 @@ export default function Navbar() {
 
           {navItems.map((item, index) => (
             <Link
-              key={item.href}
+              key={item.label}
               ref={(el) => {
                 navRefs.current[index] = el;
               }}
               href={item.href}
               prefetch={true}
-              onClick={() => {
-                if (item.href.includes('#')) {
-                  setCurrentHash(item.href.substring(item.href.indexOf('#')));
-                } else {
-                  setCurrentHash('');
-                }
-                // Immediate pill animation on click
-                if (navRefs.current[index]) {
-                  movePillTo(navRefs.current[index], true);
-                }
-              }}
-              className={`focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1 text-xs font-medium transition-colors duration-200 sm:px-3.5 sm:py-1 sm:text-[13px] z-10 ${ 
-                isActive(item.href)
+              onClick={(e) => handleNavClick(e, item.href, index)}
+              className={`focus-ring relative inline-flex cursor-pointer items-center justify-center rounded-full px-3 py-1 text-xs font-medium transition-colors duration-200 sm:px-3.5 sm:py-1 sm:text-[13px] z-10 ${
+                activeIndex === index
                   ? 'text-foreground'
                   : 'text-foreground/60 hover:text-foreground'
               }`}
@@ -186,4 +222,3 @@ export default function Navbar() {
     </nav>
   );
 }
-
