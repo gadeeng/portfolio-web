@@ -1,0 +1,124 @@
+/* ── Loading Screen overlay ───────────────────────────────────────────────── */
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  background-color: var(--background);
+  opacity: 1;
+  transition: opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: all;
+  /* Hardware acceleration & isolation to prevent paint thrashing */
+  isolation: isolate;
+  transform: translateZ(0);
+  will-change: opacity;
+  backface-visibility: hidden;
+}
+
+.loading-screen--out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── DaisyUI loading-ring (GPU-accelerated 60/120fps implementation) ────── */
+/*
+ * Native DaisyUI uses an SVG SMIL mask (data:image/svg+xml), which runs
+ * on the CPU main thread and causes severe stutter/lag during page hydration
+ * and WebGL initialization.
+ *
+ * This implementation achieves the exact same DaisyUI radar ripple visual
+ * using pure CSS transform: scale() and opacity on dedicated compositor layers,
+ * guaranteeing 60-120 FPS without main-thread bottleneck.
+ */
+.loading {
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  width: 1.5rem;
+  color: var(--foreground);
+  vertical-align: middle;
+}
+
+.loading-ring {
+  position: relative;
+  border-radius: 9999px;
+  transform: translateZ(0);
+  mask-image: none !important;
+  -webkit-mask-image: none !important;
+  background: transparent !important;
+}
+
+.loading-ring::before,
+.loading-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid currentColor;
+  opacity: 0;
+  will-change: transform, opacity;
+  transform: scale(0.08) translateZ(0);
+  animation: loading-ring-expand 1.8s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+  backface-visibility: hidden;
+}
+
+.loading-ring::after {
+  animation-delay: -0.9s;
+}
+
+/* ── Size modifiers ──────────────────────────────────────────────────────── */
+.loading-xs { width: 1rem; }
+.loading-xs.loading-ring::before,
+.loading-xs.loading-ring::after { border-width: 1.5px; }
+
+.loading-sm { width: 1.25rem; }
+.loading-sm.loading-ring::before,
+.loading-sm.loading-ring::after { border-width: 2px; }
+
+.loading-md { width: 1.75rem; }
+.loading-md.loading-ring::before,
+.loading-md.loading-ring::after { border-width: 2.5px; }
+
+.loading-lg { width: 3.25rem; }
+.loading-lg.loading-ring::before,
+.loading-lg.loading-ring::after { border-width: 3px; }
+
+.loading-xl { width: 4.5rem; }
+.loading-xl.loading-ring::before,
+.loading-xl.loading-ring::after { border-width: 4px; }
+
+@keyframes loading-ring-expand {
+  0% {
+    transform: scale(0.08) translateZ(0);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1) translateZ(0);
+    opacity: 0;
+  }
+}
+
+/* ── Static loading text ─────────────────────────────────────────────────── */
+.loading-text {
+  font-size: 0.875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-weight: 500;
+  user-select: none;
+}
+
+/* ── Reduced motion accessibility ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .loading-ring::before,
+  .loading-ring::after {
+    animation-duration: 3.6s;
+  }
+}
