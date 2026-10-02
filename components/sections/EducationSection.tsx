@@ -9,11 +9,57 @@ import {
   Calendar,
   Layers,
   MapPin,
+  Sigma,
+  Cpu,
+  Code2,
 } from 'lucide-react';
 import BorderGlow from '@/components/react-bits/BorderGlow';
 import EducationBackground from './EducationBackground';
 import { useTheme } from '@/components/ThemeProvider';
 import { useScrollReveal } from '@/lib/useScrollReveal';
+
+// ── Skills & Competencies data (structured across mathematical disciplines) ──
+const SKILL_CATEGORIES = [
+  {
+    title: 'Mathematical Modeling',
+    icon: Sigma,
+    description: 'Formulating dynamical systems, differential equations, and operational optimization into rigorous quantitative models.',
+    skills: [
+      { name: 'Dynamical Systems' },
+      { name: 'Stability & Bifurcation Analysis' },
+      { name: 'Agent-Based Modeling (ABMS)' },
+      { name: 'Queueing Theory (M/M/1)' },
+      { name: 'Numerical Simulation' },
+      { name: 'Optimization Algorithms' },
+    ],
+  },
+  {
+    title: 'Machine Learning & Analytics',
+    icon: Cpu,
+    description: 'Extracting patterns, constructing regression/classification models, and building regional commodity forecasting systems.',
+    skills: [
+      { name: 'Time Series Forecasting' },
+      { name: 'Supervised & Unsupervised ML' },
+      { name: 'Ensemble Learning (Extra Trees)' },
+      { name: 'Sentiment Analysis & NLP' },
+      { name: 'Exploratory Data Analysis (EDA)' },
+      { name: 'Scikit-Learn, Pandas, NumPy' },
+    ],
+  },
+  {
+    title: 'Programming & Implementation',
+    icon: Code2,
+    description: 'Translating mathematical methods into clean computational code, reactive data dashboards, and web applications.',
+    skills: [
+      { name: 'Python' },
+      { name: 'SQL' },
+      { name: 'TypeScript / JavaScript' },
+      { name: 'Streamlit' },
+      { name: 'React / Next.js' },
+      { name: 'Git & Version Control' },
+    ],
+  },
+];
 
 // ── Shared BorderGlow config tuned to crimson palette ─────────────────────────
 function useBentoGlowProps(isLight: boolean) {
@@ -90,7 +136,6 @@ export default function EducationSection() {
               Education
             </h2>
           </div>
-          <span className="text-sm text-foreground/30 tabular-nums">Universitas Airlangga</span>
         </div>
 
         {/* ── Bento Grid ───────────────────────────────────────────────── */}
@@ -330,6 +375,73 @@ export default function EducationSection() {
             </BorderGlow>
           </div>
 
+        </div>
+
+        {/* ── Skills & Technical Competencies (Integrated below Education Bento) ── */}
+        <div className="mt-12 sm:mt-16">
+          {/* Subheader */}
+          <div
+            data-reveal
+            data-delay="390"
+            className="reveal mb-6 flex items-baseline justify-between border-b border-foreground/8 pb-4"
+          >
+            <div className="flex items-center gap-3">
+              <Cpu className="h-4 w-4 text-[#e60012]/70" />
+              <h3 className="text-[1.05rem] font-medium tracking-tight text-foreground/50 uppercase">
+                Skills & Technical Competencies
+              </h3>
+            </div>
+          </div>
+
+          {/* Cards Grid: 3 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-stretch">
+            {SKILL_CATEGORIES.map((cat, idx) => {
+              const Icon = cat.icon;
+              return (
+                <div
+                  key={cat.title}
+                  data-reveal
+                  data-delay={String(420 + idx * 80)}
+                  className="reveal card-hover-lift h-full"
+                >
+                  <BorderGlow {...glowProps} className="h-full" style={{ height: '100%' }}>
+                    <div className="p-6 flex flex-col h-full">
+                      {/* Header */}
+                      <div className="flex items-center gap-2.5 border-b border-foreground/8 pb-3">
+                        <Icon className="h-4 w-4 text-[#e60012]" />
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground/85">
+                          {cat.title}
+                        </h4>
+                      </div>
+
+                      {/* Description with fixed min-height for uniform baseline */}
+                      <p className="mt-3 text-xs leading-relaxed text-foreground/50 min-h-[44px]">
+                        {cat.description}
+                      </p>
+
+                      {/* Vertically stacked full-width skill rows */}
+                      <div className="mt-5 flex flex-col gap-2 flex-1">
+                        {cat.skills.map((skill) => (
+                          <div
+                            key={skill.name}
+                            className="group/skill flex w-full items-center gap-2.5 rounded-lg border border-foreground/8 bg-foreground/[0.02] px-3.5 py-2.5 text-xs font-medium text-foreground/80 transition-all duration-200 hover:border-[#e60012]/35 hover:bg-[#e60012]/5 hover:translate-x-1 cursor-default"
+                          >
+                            <span
+                              className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#e60012] group-hover/skill:scale-125 transition-transform"
+                              aria-hidden="true"
+                            />
+                            <span className="truncate group-hover/skill:text-foreground transition-colors">
+                              {skill.name}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </BorderGlow>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>{/* end z-10 wrapper */}
     </section>

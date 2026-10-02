@@ -52,7 +52,7 @@ export default function ProjectsPage() {
       tags: ['SERVQUAL', 'Gioia Method', 'Quality Analysis'],
       repositories: [],
       webApps: [
-        { name: 'Analysis Portal', url: '#' },
+        { name: 'Analysis Portal', url: 'https://gioiadashboard.vercel.app/' },
       ],
       images: [
         { src: '/projects_picts/pelindo/surveyAnalysis/1.png', alt: 'Overview Tab' },
@@ -115,7 +115,7 @@ export default function ProjectsPage() {
       tags: ['Mathematical Modeling', 'Stability Analysis', 'Python'],
       repositories: [],
       webApps: [
-        { name: 'Presentation', url: '#' },
+        { name: 'Presentation', url: 'https://canva.link/dbhlsab88mhu6mk' },
       ],
       images: [
         { src: '/projects_picts/predator-prey/1.jpg', alt: 'Undergraduate Thesis' },

@@ -1,12 +1,18 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 
-type Theme = 'dark' | 'light';
+export type Theme = 'dark' | 'light';
+
+export type ToggleThemeEvent =
+  | React.MouseEvent
+  | { clientX: number; clientY: number }
+  | undefined;
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme: () => void;
+  toggleTheme: (event?: ToggleThemeEvent) => void;
   setTheme: (theme: Theme) => void;
 }
 
@@ -54,9 +60,59 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     applyTheme(t);
   };
 
-  const toggleTheme = () => {
+  const toggleTheme = (event?: ToggleThemeEvent) => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
+
+    // Check if View Transitions API is supported and motion is not reduced
+    const isViewTransitionSupported =
+      typeof document !== 'undefined' &&
+      'startViewTransition' in document &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!isViewTransitionSupported) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    // Determine circular expansion origin from click position (default: top navbar center-right)
+    const x =
+      event && 'clientX' in event && typeof event.clientX === 'number'
+        ? event.clientX
+        : window.innerWidth / 2;
+    const y =
+      event && 'clientY' in event && typeof event.clientY === 'number'
+        ? event.clientY
+        : 32;
+
+    // Calculate maximum radius to the furthest corner of the viewport
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = (document as any).startViewTransition(() => {
+      flushSync(() => {
+        setTheme(nextTheme);
+      });
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ];
+
+      document.documentElement.animate(
+        {
+          clipPath,
+        },
+        {
+          duration: 450,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          pseudoElement: '::view-transition-new(root)',
+        }
+      );
+    });
   };
 
   return (

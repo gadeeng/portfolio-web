@@ -137,7 +137,7 @@ export default function OrganizationSection() {
         <div className="flex items-center gap-3">
           <Users className="h-4 w-4 text-[#EF4444]" />
           <h2 className="text-xs sm:text-sm font-semibold tracking-wider text-foreground/60 uppercase">
-            Organizational Experience
+            Organizational and Volunteer Experience
           </h2>
         </div>
       </div>
@@ -151,86 +151,86 @@ export default function OrganizationSection() {
             data-delay={60 + index * 100}
             className="reveal card-hover-lift group relative rounded-2xl border border-foreground/10 bg-foreground/[0.015] hover:bg-foreground/[0.025] hover:border-foreground/20 transition-all duration-300 p-6 sm:p-8"
           >
-              {/* 2-Column Split: Content on Left, Photography Carousel on Right */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* 2-Column Split: Content on Left, Photography Carousel on Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-                {/* ── Left Column: Initiative Narrative & Details ── */}
-                <div className="lg:col-span-6 flex flex-col justify-between h-full">
-                  <div>
-                    {/* Header Row: Index Number & Category Badge */}
-                    <div className="flex items-center gap-2.5 mb-3.5">
-                      <span className="text-xs font-mono font-medium text-[#EF4444]">
-                        /{org.index}
-                      </span>
-                      <span className="inline-flex items-center rounded-full bg-foreground/[0.04] border border-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-foreground/75">
-                        {org.category}
-                      </span>
-                    </div>
+              {/* ── Left Column: Initiative Narrative & Details ── */}
+              <div className="lg:col-span-6 flex flex-col justify-between h-full">
+                <div>
+                  {/* Header Row: Index Number & Category Badge */}
+                  <div className="flex items-center gap-2.5 mb-3.5">
+                    <span className="text-xs font-mono font-medium text-[#EF4444]">
+                      /{org.index}
+                    </span>
+                    <span className="inline-flex items-center rounded-full bg-foreground/[0.04] border border-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-foreground/75">
+                      {org.category}
+                    </span>
+                  </div>
 
-                    {/* Organization Name */}
-                    <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug">
-                      {org.organization}
-                    </h3>
+                  {/* Organization Name */}
+                  <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug">
+                    {org.organization}
+                  </h3>
 
-                    {/* Role & Period */}
-                    <div className="mt-1 mb-3">
-                      <p className="text-sm font-semibold text-foreground/90">
-                        {org.role}
-                      </p>
-                      <div className="flex items-center gap-1.5 text-xs text-foreground/50 mt-1 font-mono">
-                        <Calendar className="h-3 w-3 opacity-60" />
-                        <span>{org.period}</span>
-                      </div>
-                    </div>
-
-                    {/* Metadata (Location & Partner) */}
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-foreground/60 mb-4 pb-3 border-b border-foreground/8">
-                      {org.location && (
-                        <span className="inline-flex items-center gap-1.5">
-                          <MapPin className="h-3 w-3 opacity-60" />
-                          {org.location}
-                        </span>
-                      )}
-                      {org.partner && (
-                        <span className="inline-flex items-center gap-1.5">
-                          <Layers className="h-3 w-3 opacity-60" />
-                          {org.partner}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Description Paragraph */}
-                    <p className="text-[13.5px] leading-relaxed text-foreground/70 mb-5">
-                      {org.description}
+                  {/* Role & Period */}
+                  <div className="mt-1 mb-3">
+                    <p className="text-sm font-semibold text-foreground/90">
+                      {org.role}
                     </p>
+                    <div className="flex items-center gap-1.5 text-xs text-foreground/50 mt-1 font-mono">
+                      <Calendar className="h-3 w-3 opacity-60" />
+                      <span>{org.period}</span>
+                    </div>
                   </div>
 
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {org.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-md border border-foreground/8 bg-foreground/[0.03] px-2.5 py-1 text-[11px] font-medium text-foreground/65 transition-colors group-hover:border-foreground/15"
-                      >
-                        {tag}
+                  {/* Metadata (Location & Partner) */}
+                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-foreground/60 mb-4 pb-3 border-b border-foreground/8">
+                    {org.location && (
+                      <span className="inline-flex items-center gap-1.5">
+                        <MapPin className="h-3 w-3 opacity-60" />
+                        {org.location}
                       </span>
-                    ))}
+                    )}
+                    {org.partner && (
+                      <span className="inline-flex items-center gap-1.5">
+                        <Layers className="h-3 w-3 opacity-60" />
+                        {org.partner}
+                      </span>
+                    )}
                   </div>
+
+                  {/* Description Paragraph */}
+                  <p className="text-[13.5px] leading-relaxed text-foreground/70 mb-5">
+                    {org.description}
+                  </p>
                 </div>
 
-                {/* ── Right Column: Photography Carousel ── */}
-                <div className="lg:col-span-6 w-full">
-                  <PhotoGalleryCarousel
-                    photos={org.photos}
-                    aspectRatio="aspect-[16/10]"
-                    autoPlayInterval={4500}
-                  />
+                {/* Tags */}
+                <div className="flex flex-wrap gap-1.5 pt-2">
+                  {org.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-md border border-foreground/8 bg-foreground/[0.03] px-2.5 py-1 text-[11px] font-medium text-foreground/65 transition-colors group-hover:border-foreground/15"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-
               </div>
-            </article>
-          ))}
-        </div>
-      </section>
+
+              {/* ── Right Column: Photography Carousel ── */}
+              <div className="lg:col-span-6 w-full">
+                <PhotoGalleryCarousel
+                  photos={org.photos}
+                  aspectRatio="aspect-[16/10]"
+                  autoPlayInterval={4500}
+                />
+              </div>
+
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   );
 }

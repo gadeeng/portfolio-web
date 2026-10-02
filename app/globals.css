@@ -426,3 +426,25 @@ nav[aria-label="Primary"] {
     transition: none !important;
   }
 }
+
+/* ── View Transitions (Smooth Circular Ripple Theme Transition) ───────────── */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 99999;
+}
+
+/* Non-View-Transition fallback for smooth background/color transitions */
+@supports not (view-transition-name: root) {
+  body {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}

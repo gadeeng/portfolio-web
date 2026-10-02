@@ -73,35 +73,42 @@ export default function ProjectCarousel({ name, images }: ProjectCarouselProps) 
         tabIndex={0}
         className="focus-ring flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-xl border border-foreground/10 bg-foreground/[0.03] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >
-        {images.map((img, i) => (
-          <div
-            key={img.src}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${total}`}
-            className="relative w-full shrink-0 snap-center"
-            style={{
-              // Responsive height: lebih pendek di mobile
-              aspectRatio: '16/9',
-              minHeight: 'clamp(200px, 45vw, 480px)',
-            }}
-          >
-            {failed[i] ? (
-              <div className="flex h-full w-full items-center justify-center p-6 text-center text-sm text-foreground/35">
-                Image not available
-              </div>
-            ) : (
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                sizes="(min-width: 1024px) 720px, 100vw"
-                className="object-contain object-center bg-foreground/5"
-                onError={() => setFailed((prev) => ({ ...prev, [i]: true }))}
-              />
-            )}
-          </div>
-        ))}
+        {images.map((img, i) => {
+          const isNearby = Math.abs(i - index) <= 1;
+
+          return (
+            <div
+              key={img.src}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${total}`}
+              className="relative w-full shrink-0 snap-center"
+              style={{
+                // Responsive height: lebih pendek di mobile
+                aspectRatio: '16/9',
+                minHeight: 'clamp(200px, 45vw, 480px)',
+              }}
+            >
+              {failed[i] ? (
+                <div className="flex h-full w-full items-center justify-center p-6 text-center text-sm text-foreground/35">
+                  Image not available
+                </div>
+              ) : isNearby ? (
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  sizes="(min-width: 1024px) 720px, 100vw"
+                  className="object-contain object-center bg-foreground/5"
+                  onError={() => setFailed((prev) => ({ ...prev, [i]: true }))}
+                />
+              ) : (
+                <div className="h-full w-full bg-foreground/[0.02]" aria-hidden="true" />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Caption di kiri, kontrol di kanan */}

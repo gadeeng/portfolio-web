@@ -203,7 +203,7 @@ export default function Navbar() {
         {/* Dark / Light Mode Switch Button */}
         <button
           type="button"
-          onClick={toggleTheme}
+          onClick={(e) => toggleTheme(e)}
           aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
           className="focus-ring relative inline-flex h-7 w-7 sm:h-7.5 sm:w-7.5 cursor-pointer items-center justify-center rounded-full text-foreground/70 transition-colors hover:bg-foreground/6 hover:text-foreground active:scale-95"

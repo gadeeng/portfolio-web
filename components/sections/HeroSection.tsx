@@ -7,10 +7,15 @@ import { ArrowRight, Mail } from 'lucide-react';
 import { useTheme } from '@/components/ThemeProvider';
 import TextType from '@/components/react-bits/TextType';
 
-// Dynamically import Lanyard, LightRays & Galaxy (Three.js/WebGL — client-only, no SSR)
+// Dynamically import Lanyard (Three.js — client-only, no SSR)
 const Lanyard = dynamic(() => import('../react-bits/Lanyard'), { ssr: false });
-const LightRays = dynamic(() => import('../react-bits/LightRays'), { ssr: false });
-const Galaxy = dynamic(() => import('../react-bits/Galaxy'), { ssr: false });
+// HalftoneNebula uses raw WebGL2 — client-only, no SSR
+const HalftoneNebula = dynamic(() => import('../react-bits/HalftoneNebula'), { ssr: false });
+// GridPulse — canvas grid untuk light mode, sangat ringan
+const GridPulse = dynamic(
+  () => import('@/components/ui/grid-pulse').then(m => ({ default: m.GridPulse })),
+  { ssr: false },
+);
 
 const competencies = [
   { label: 'Mathematical Modeling', kanji: '数理' },
@@ -39,91 +44,120 @@ export default function HeroSection() {
 
   // Direct DOM attribute mutation — no setState re-render, zero lag on refresh
   const sectionRef = useRef<HTMLElement>(null);
+  const [mount3D, setMount3D] = React.useState(false);
+
   useEffect(() => {
+    // Defer heavy 3D Canvas initialization slightly so loading screen renders initial frames at locked 120 FPS
+    const timer = setTimeout(() => setMount3D(true), 150);
+    const handleLoaded = () => setMount3D(true);
+    window.addEventListener('portfolio:loaded', handleLoaded, { once: true });
+
     // requestAnimationFrame ensures the browser has painted before we trigger animations
     const raf = requestAnimationFrame(() => {
       sectionRef.current?.setAttribute('data-mounted', '');
     });
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('portfolio:loaded', handleLoaded);
+      cancelAnimationFrame(raf);
+    };
   }, []);
+
+  // ── Nebula params — dioptimalkan untuk performa & tema ────────────────
+  // Strategi performa:
+  //   pixel besar  → sel lebih sedikit, shader lebih cepat
+  //   levels kecil → iterasi quantize lebih sedikit
+  //   warp rendah  → fbm lebih ringan
+  //   sparkles/stars dikurangi → loop di shader lebih pendek
+  //   planet nonaktif di mobile → satu cabang shader dihilangkan
+  //   maxDpr 1.5   → resolusi canvas lebih kecil
+  const nebulaParams = React.useMemo(() => ({
+    // Planet di sudut kanan atas, menjauh dari teks
+    planetX: 0.74,
+    planetY: 0.2,
+    planet: !isMobile,
+
+    // Palet merah Hinomaru — tetap satu warna utama, opacity diatur di wrapper
+    voidColor: '#050309',
+    hazeColor: '#1a0508',
+    duskColor: '#3b0808',
+    wineColor: '#5c0d0d',
+    crimsonColor: '#c01212',
+    hotColor: '#e60012',
+    starColor: '#f6e2e2',
+
+    // ── Performa ──────────────────────────────────────────────────────────
+    // pixel lebih besar = sel jauh lebih sedikit per frame
+    pixel: isMobile ? 8 : 10,
+    // quantisation steps dikurangi (default 7 → 5)
+    levels: 5,
+    // domain-warp diturunkan → fbm lebih ringan
+    warp: 0.9,
+    // sparkle: max 4 di desktop, 2 di mobile (setiap sparkle = 1 loop di fragment)
+    sparkles: isMobile ? 2 : 4,
+    // kepadatan bintang parallax dikurangi
+    stars: isMobile ? 0.35 : 0.55,
+    // kecepatan animasi — lebih lambat = GPU tidak bekerja maksimal terus
+    speed: isMobile ? 0.45 : 0.65,
+
+    // ── Gas & visual ──────────────────────────────────────────────────────
+    density: 0.44,
+    haze: 0.6,
+    vignette: 0.5,
+    grain: 0.022,
+    band: 0.45,
+  }), [isMobile]);
 
   return (
     <section id="hero" ref={sectionRef} className="relative isolate w-full overflow-hidden">
 
-      {/* ── Background Layer ────────────────────────────────────────────── */}
+      {/* ── Background (dark: HalftoneNebula | light: GridPulse) ─────────── */}
       <div
-        className="pointer-events-none absolute inset-x-1.5 top-1.5 bottom-0 z-0 overflow-hidden rounded-t-[16px] border-t border-x border-foreground/8 sm:inset-x-2.5 sm:top-2 sm:rounded-t-[20px]"
-        style={{
-          maskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black 60%, transparent 100%)',
-        }}
+        className="absolute inset-x-1.5 top-1.5 bottom-0 z-0 overflow-hidden rounded-t-[16px] border-t border-x border-foreground/8 sm:inset-x-2.5 sm:top-2 sm:rounded-t-[20px]"
         aria-hidden="true"
       >
-        {/* Dark mode ambient glow — Hinomaru crimson */}
-        <div
-          className="hero-overlay-dark absolute inset-0"
-          style={{
-            opacity: isLight ? 0 : 1,
-            background: 'radial-gradient(ellipse 85% 50% at 50% -8%, rgba(230, 0, 18, 0.32) 0%, rgba(220, 38, 38, 0.10) 45%, transparent 72%)',
-          }}
-        />
+        {/* Dark mode: Halftone Nebula pixel-art sky */}
+        {!isLight && (
+          <div
+            style={{
+              position: 'absolute', inset: 0,
+              opacity: 0.58,
+              maskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 65%, transparent 100%)',
+            }}
+          >
+            <HalftoneNebula
+              height="100%"
+              params={nebulaParams}
+              interactive={!isMobile}
+              touch="scroll"
+              maxDpr={isMobile ? 1 : 1.5}
+              className="absolute inset-0"
+            />
+          </div>
+        )}
 
-        {/* Light mode ambient glow — softer vermilion */}
-        <div
-          className="hero-overlay-light absolute inset-0"
-          style={{
-            opacity: isLight ? 1 : 0,
-            background: 'radial-gradient(ellipse 85% 50% at 50% -8%, rgba(230, 0, 18, 0.10) 0%, rgba(185, 28, 28, 0.04) 45%, transparent 72%)',
-          }}
-        />
-
-        {/* WebGL Galaxy Starfield */}
-        <div
-          className="absolute inset-0"
-          style={{
-            opacity: isLight ? 0.18 : 0.65,
-            mixBlendMode: isLight ? 'multiply' : 'screen',
-            transition: 'opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
-        >
-          <Galaxy
-            transparent={true}
-            lightMode={isLight}
-            density={isMobile ? 0.4 : (isLight ? 0.55 : 0.9)}
-            glowIntensity={isMobile ? 0.1 : (isLight ? 0.15 : 0.3)}
-            twinkleIntensity={isMobile ? 0.15 : (isLight ? 0.25 : 0.4)}
-            starSpeed={0.3}
-            speed={isMobile ? 0.2 : 0.4}
-            rotationSpeed={isMobile ? 0.01 : 0.02}
-            mouseInteraction={false}
-          />
-        </div>
-
-        {/* WebGL Light Rays */}
-        <div
-          className="absolute inset-0"
-          style={{
-            opacity: isMobile ? 0.5 : (isLight ? 0.45 : 0.85),
-            mixBlendMode: 'screen',
-            transition: 'opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)',
-          }}
-        >
-          <LightRays
-            raysOrigin="top-center"
-            raysColor={isLight ? '#f87171' : '#ef4444'}
-            intensity={isMobile ? 0.5 : (isLight ? 0.45 : 0.85)}
-            raysSpeed={isMobile ? 0.4 : 0.8}
-            lightSpread={0.9}
-            rayLength={isMobile ? 1.2 : 2.0}
-            pulsating={false}
-            fadeDistance={1.2}
-            saturation={1.1}
-            followMouse={false}
-            noiseAmount={0.02}
-            distortion={isMobile ? 0.15 : 0.3}
-            lightMode={false}
-          />
-        </div>
+        {/* Light mode: GridPulse — grid halus yang menyala di bawah pointer.
+            Lebih ringan dari WebGL nebula, cocok untuk tema terang.
+            Warna mengikuti foreground theme secara otomatis. */}
+        {isLight && (
+          <>
+            <GridPulse
+              cell={isMobile ? 20 : 26}
+              reach={2.0}
+              ambient={2}
+              maxLit={120}
+              className="[mask-image:linear-gradient(to_bottom,#000_70%,transparent)]"
+            />
+            {/* Aksen merah Hinomaru tipis agar section tidak terasa kosong */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'radial-gradient(ellipse 80% 50% at 50% -5%, rgba(230,0,18,0.08) 0%, rgba(185,28,28,0.03) 50%, transparent 75%)',
+              }}
+            />
+          </>
+        )}
       </div>
 
       {/* ── Main Content ────────────────────────────────────────────────── */}
@@ -288,18 +322,22 @@ export default function HeroSection() {
 
             {/* Lanyard container — lebih kecil di mobile agar tidak overflow */}
             <div className="relative h-[300px] sm:h-[420px] md:h-[460px] lg:h-[500px] w-full max-w-[320px] sm:max-w-[400px]">
-              <Lanyard
-                position={[0, -0.05, 11.8]}
-                gravity={[0, -40, 0]}
-                fov={18}
-                transparent={true}
-                anchorPosition={[0, 3.7, 0]}
-                jointDistance={0.88}
-                cardScale={isMobile ? 2.0 : 2.65}
-                frontImage="/Lanyard%20Pics.webp"
-                backImage="/Lanyard%20Pics.webp"
-                imageFit="cover"
-              />
+              {mount3D ? (
+                <Lanyard
+                  position={[0, -0.05, 11.8]}
+                  gravity={[0, -40, 0]}
+                  fov={18}
+                  transparent={true}
+                  anchorPosition={[0, 3.7, 0]}
+                  jointDistance={0.88}
+                  cardScale={isMobile ? 2.0 : 2.65}
+                  frontImage="/Lanyard%20Pics.webp"
+                  backImage="/Lanyard%20Pics.webp"
+                  imageFit="cover"
+                />
+              ) : (
+                <div className="h-full w-full" aria-hidden="true" />
+              )}
             </div>
           </div>
         </div>
