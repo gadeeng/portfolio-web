@@ -26,9 +26,8 @@ const SKILL_CATEGORIES = [
     description: 'Formulating dynamical systems, differential equations, and operational optimization into rigorous quantitative models.',
     skills: [
       { name: 'Dynamical Systems' },
-      { name: 'Stability & Bifurcation Analysis' },
-      { name: 'Agent-Based Modeling (ABMS)' },
-      { name: 'Queueing Theory (M/M/1)' },
+      { name: 'Stability Analysis' },
+      { name: 'Agent-Based Modeling' },
       { name: 'Numerical Simulation' },
       { name: 'Optimization Algorithms' },
     ],
@@ -36,13 +35,11 @@ const SKILL_CATEGORIES = [
   {
     title: 'Machine Learning & Analytics',
     icon: Cpu,
-    description: 'Extracting patterns, constructing regression/classification models, and building regional commodity forecasting systems.',
+    description: 'Extracting patterns, constructing regression/classification models.',
     skills: [
       { name: 'Time Series Forecasting' },
       { name: 'Supervised & Unsupervised ML' },
-      { name: 'Ensemble Learning (Extra Trees)' },
       { name: 'Sentiment Analysis & NLP' },
-      { name: 'Exploratory Data Analysis (EDA)' },
       { name: 'Scikit-Learn, Pandas, NumPy' },
     ],
   },
@@ -53,10 +50,7 @@ const SKILL_CATEGORIES = [
     skills: [
       { name: 'Python' },
       { name: 'SQL' },
-      { name: 'TypeScript / JavaScript' },
       { name: 'Streamlit' },
-      { name: 'React / Next.js' },
-      { name: 'Git & Version Control' },
     ],
   },
 ];
