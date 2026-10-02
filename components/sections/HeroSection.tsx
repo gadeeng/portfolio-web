@@ -47,17 +47,24 @@ export default function HeroSection() {
   const [mount3D, setMount3D] = React.useState(false);
 
   useEffect(() => {
-    // Defer heavy 3D Canvas initialization slightly so loading screen renders initial frames at locked 120 FPS
-    const timer = setTimeout(() => setMount3D(true), 150);
+    // Mount 3D only after the loading screen has exited — prevents Three.js/WebGL
+    // initialization from competing with the loading screen animation for GPU resources.
+    // DeferredPageContent already hides this section until 'portfolio:loaded', so
+    // we don't need the old 150ms fallback timer.
     const handleLoaded = () => setMount3D(true);
-    window.addEventListener('portfolio:loaded', handleLoaded, { once: true });
+
+    if (typeof window !== 'undefined' && (window as any).__portfolioLoaded) {
+      // Already loaded (e.g. navigating back to this page)
+      setMount3D(true);
+    } else {
+      window.addEventListener('portfolio:loaded', handleLoaded, { once: true });
+    }
 
     // requestAnimationFrame ensures the browser has painted before we trigger animations
     const raf = requestAnimationFrame(() => {
       sectionRef.current?.setAttribute('data-mounted', '');
     });
     return () => {
-      clearTimeout(timer);
       window.removeEventListener('portfolio:loaded', handleLoaded);
       cancelAnimationFrame(raf);
     };
