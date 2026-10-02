@@ -1,6 +1,6 @@
-# Personal Website — Modern Portfolio
+# Personal Website — Gading's Portfolio
 
-A high-performance, dark-themed personal portfolio built with **Next.js (App Router)**, **Tailwind CSS**, and **React Bits** components (`LightRays`, `Lanyard`, `PillNav`, `DarkVeil`, `BorderGlow`).
+A modern, high-performance personal portfolio built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and interactive visual components. Features a Japanese Hinomaru-inspired dark/light theme aesthetic, dynamic WebGL shaders, 3D physics, and zero-jank loading performance.
 
 ---
 
@@ -8,10 +8,19 @@ A high-performance, dark-themed personal portfolio built with **Next.js (App Rou
 
 - **Framework**: Next.js 15+ (App Router)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **Graphics & Shaders**: `ogl` (WebGL), `three` (3D Physics)
-- **Animations**: GSAP & CSS Transitions
+- **Styling**: Tailwind CSS v4 & Custom CSS Design System
+- **Graphics & Shaders**: `ogl` (WebGL2 shaders for HalftoneNebula), `three` (3D physics for Lanyard)
+- **Animations**: CSS Keyframes, Canvas rendering, dynamic scroll reveals
 - **Icons**: Lucide React
+
+---
+
+## Key Features & Optimizations
+
+- **Non-blocking Loading Screen**: Custom radar-pulse loading overlay with deferred page content rendering (`DeferredPageContent`) to ensure silky-smooth 60+ FPS animations during initial page load.
+- **Pixel-Art WebGL Sky**: Procedural `HalftoneNebula` shader background for dark mode and dynamic `GridPulse` interactive canvas for light mode.
+- **Interactive 3D ID Badge**: Client-side `Lanyard` component with real physics interactions.
+- **Bento-Grid Showcase**: Dynamic card hover-lift effects with cursor-tracking `BorderGlow`.
 
 ---
 
@@ -19,25 +28,31 @@ A high-performance, dark-themed personal portfolio built with **Next.js (App Rou
 
 ```
 ├── app/
-│   ├── layout.tsx                # Root layout with Navbar, Inter font & dark theme
-│   ├── page.tsx                  # Home page (all 5 sections)
-│   ├── globals.css               # Global styles & smooth scroll behavior
+│   ├── layout.tsx                # Root layout with LoadingScreen, Navbar & ThemeProvider
+│   ├── page.tsx                  # Home page wrapped in DeferredPageContent
+│   ├── globals.css               # Global theme tokens, typography, and utility classes
 │   └── projects/
-│       └── page.tsx              # Featured projects showcase (/projects)
+│       ├── page.tsx              # Featured projects showcase (/projects)
+│       └── loading.tsx           # Projects page loading UI
 ├── components/
-│   ├── Navbar.tsx                # PillNav wrapper with scroll spy
-│   ├── react-bits/               # React Bits visual & shader components
-│   │   ├── LightRays.tsx & .css  # WebGL background rays
-│   │   ├── DarkVeil.tsx & .css   # Procedural CPPN shader
-│   │   ├── PillNav.tsx & .css    # GSAP pill navigation
-│   │   ├── BorderGlow.tsx & .css # Dynamic cursor-tracking glow border
-│   │   └── Lanyard.tsx & .css    # Interactive 3D badge card
+│   ├── DeferredPageContent.tsx   # Holds page sections hidden until loading screen exits
+│   ├── LoadingScreen.tsx & .css  # Hinomaru radar pulse loading screen overlay
+│   ├── Navbar.tsx                # Floating pill navigation with active section detection
+│   ├── ThemeProvider.tsx         # Light/Dark mode context provider
+│   ├── react-bits/               # Interactive visual & shader components
+│   │   ├── HalftoneNebula.tsx    # WebGL2 pixelated halftone nebula background
+│   │   ├── BorderGlow.tsx        # Dynamic cursor-tracking glowing border container
+│   │   ├── Lanyard.tsx           # Interactive 3D physical badge card
+│   │   └── TextType.tsx          # Typewriter text animation
+│   ├── ui/
+│   │   ├── grid-pulse.tsx        # Light mode interactive canvas grid
+│   │   └── NavigationProgress.tsx# Top navigation loading bar
 │   └── sections/
-│       ├── HeroSection.tsx       # #hero with LightRays and Lanyard
-│       ├── EducationSection.tsx  # #education
-│       ├── WorkExperienceSection.tsx # #experience
-│       ├── OrganizationSection.tsx   # #organization
-│       └── ConnectSection.tsx    # #connect with DarkVeil & BorderGlow
+│       ├── HeroSection.tsx       # Main headline, competencies, & 3D Lanyard
+│       ├── EducationSection.tsx  # University, GPA, thesis, & skill competencies bento grid
+│       ├── WorkExperienceSection.tsx # Career timeline cards
+│       ├── OrganizationSection.tsx   # Leadership roles & photo gallery carousel
+│       └── ConnectSection.tsx    # Contact links & direct messaging CTA
 ```
 
 ---
@@ -45,24 +60,24 @@ A high-performance, dark-themed personal portfolio built with **Next.js (App Rou
 ## Sections Overview
 
 1. **Hero Section (`#hero`)**:
-   - WebGL `LightRays` background strictly contained with `overflow: hidden`
-   - Bottom fade gradient seamlessly transitioning into `#0a0a0a`
-   - Responsive two-column layout with CTA buttons (`#connect`, `/projects`)
-   - Interactive 3D `Lanyard` developer ID badge
+   - Dynamic `HalftoneNebula` WebGL sky (dark mode) or `GridPulse` canvas (light mode)
+   - Multi-language typewriter welcome (`ようこそ` / `Welcome` / `Selamat Datang`)
+   - Dual CTAs with smooth scroll targeting
+   - Interactive 3D `Lanyard` developer card
 
 2. **Education Section (`#education`)**:
-   - Institution, degree, major, honors, and achievement badges
+   - Bento-grid layout detailing B.Sc. in Mathematics from Universitas Airlangga
+   - Cumulative GPA meter, graduation date, research group, and thesis overview
+   - Categorized skills & technical competencies grid (Modeling, ML, Programming)
 
 3. **Work Experience Section (`#experience`)**:
-   - Modern vertical timeline with highlight bullets and tech experience
+   - Timeline layout highlighting marketing, graphics design, and content creation roles
 
 4. **Organizational Experience Section (`#organization`)**:
-   - Leadership roles, community initiatives, and tech workshop mentorship
+   - Student association leadership, SDGs volunteer work, and interactive photo gallery carousel
 
 5. **Let's Connect Section (`#connect`)**:
-   - Centered glassmorphic card wrapped with interactive `BorderGlow`
-   - Embedded `DarkVeil` procedural shader background
-   - Direct email, GitHub, and LinkedIn contact links
+   - Centered card wrapped with `BorderGlow` and direct social/email contact options
 
 ---
 
@@ -80,13 +95,3 @@ A high-performance, dark-themed personal portfolio built with **Next.js (App Rou
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
----
-
-## Customization Guide
-
-All sections contain visible `// TODO:` comments to make adding your personal info effortless:
-- **Hero**: Update your name, tagline, and profile picture in `components/sections/HeroSection.tsx`.
-- **Education**: Update institutions and degrees in `components/sections/EducationSection.tsx`.
-- **Experience**: Add your companies and roles in `components/sections/WorkExperienceSection.tsx`.
-- **Organization**: Add your organizations and clubs in `components/sections/OrganizationSection.tsx`.
-- **Connect**: Replace email, GitHub, and LinkedIn links in `components/sections/ConnectSection.tsx`.
