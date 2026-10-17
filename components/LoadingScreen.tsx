@@ -36,15 +36,19 @@ export default function LoadingScreen() {
       }, remaining);
     };
 
-    if (document.readyState === 'complete') {
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
       hide();
     } else {
       window.addEventListener('load', hide, { once: true });
     }
 
+    // Safety fallback: guaranteed to hide after MIN_DISPLAY_MS + 200ms in all routing scenarios
+    const fallbackTimer = setTimeout(hide, MIN_DISPLAY_MS + 200);
+
     return () => {
       clearTimeout(hideTimer);
       clearTimeout(unmountTimer);
+      clearTimeout(fallbackTimer);
       window.removeEventListener('load', hide);
     };
   }, []);

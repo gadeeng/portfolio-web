@@ -145,10 +145,10 @@ export default function PhotoGalleryCarousel({
         {/* Top Floating Controls */}
         <div className="absolute top-3 inset-x-3 flex items-center justify-between z-20 pointer-events-none">
           {/* Photo Counter Pill */}
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono font-medium tracking-wider bg-black/55 text-white/90 backdrop-blur-md border border-white/10 shadow-sm">
-            <span className="text-white font-semibold">{String(currentIndex + 1).padStart(2, '0')}</span>
-            <span className="text-white/40">/</span>
-            <span className="text-white/60">{String(total).padStart(2, '0')}</span>
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium bg-black/55 text-white/90 backdrop-blur-md border border-white/10 shadow-sm">
+            <span className="text-white font-semibold">{currentIndex + 1}</span>
+            <span className="text-white/40">of</span>
+            <span className="text-white/70">{total}</span>
           </span>
 
           {/* Lightbox Trigger Button */}
@@ -257,8 +257,8 @@ export default function PhotoGalleryCarousel({
           </button>
 
           {/* Lightbox Counter Top Center */}
-          <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 px-3.5 py-1 rounded-full text-xs font-mono font-medium tracking-wider bg-white/10 text-white/90 backdrop-blur-md border border-white/10">
-            {String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 z-50 px-3.5 py-1 rounded-full text-xs font-medium bg-white/10 text-white/90 backdrop-blur-md border border-white/10">
+            {currentIndex + 1} of {total}
           </div>
 
           {/* Prev / Next Modal Buttons */}

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="symbol-title">
+  <title id="symbol-title">Gading Kusuma Symbol - Solid Black</title>
+  <path fill="#111111" fill-rule="evenodd" d="M 216 48
+    C 160 20 84 36 46 88
+    C 12 134 26 200 78 228
+    C 134 258 208 226 232 168
+    C 236 158 238 144 238 132
+    L 152 132
+    L 152 160
+    L 198 160
+    C 184 192 142 208 106 194
+    C 68 180 54 136 74 102
+    C 98 62 152 52 192 72
+    L 216 48
+    Z"/>
+  <circle cx="118" cy="132" r="14" fill="#111111"/>
+</svg>

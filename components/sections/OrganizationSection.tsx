@@ -6,13 +6,11 @@ import {
   MapPin,
   Calendar,
   Layers,
-  ArrowUpRight,
+  Sparkles,
+  HeartHandshake,
 } from 'lucide-react';
 import PhotoGalleryCarousel, { GalleryPhoto } from './PhotoGalleryCarousel';
 import { useScrollReveal } from '@/lib/useScrollReveal';
-
-// ── Accent Color (matches portfolio branding) ────────────────────────────────
-const ACCENT = '#EF4444';
 
 // ── Types ────────────────────────────────────────────────────────────────────
 export interface OrgExperienceItem {
@@ -41,7 +39,7 @@ const ORGANIZATIONS: OrgExperienceItem[] = [
     partner: 'Himpunan Mahasiswa Matematika UNAIR',
     location: 'Surabaya, Indonesia',
     description:
-      'Support media management through graphic design, content creation, and visual branding, oversee design quality to ensure consistency with organizational visual standards, and contribute to the development of media and communications strategies.',
+      'Supported media operations through strategic graphic design, digital content production, and visual brand identity for the Adhisatya Cabinet. Oversaw creative quality to ensure strict brand consistency across public-facing channels.',
     tags: ['Visual Branding', 'Graphic Design', 'Media Strategy'],
     photos: [
       { src: '/org_exp/himatika/11.jpg', title: 'HIMATIKA UNAIR', caption: 'Graduate Appreciation Documentation' },
@@ -61,8 +59,8 @@ const ORGANIZATIONS: OrgExperienceItem[] = [
     partner: 'Universitas Airlangga × Universiti Teknologi Malaysia',
     location: 'Taman Hutan Kota Jeruk, Surabaya',
     description:
-      'Manage media and communications for educational outreach programs, including FunMath Camp (2023) and Play to Solve: A Math Game Day (2025), organized through a collaboration between Universitas Airlangga and Universiti Teknologi Malaysia, by creating content, and handling documentation.',
-    tags: ['Event Documentation', 'Interactive Math'],
+      'Led media, visual communications, and event documentation for international educational outreach initiatives, including FunMath Camp (2023) and Play to Solve: A Math Game Day (2025) in cross-border partnership with UTM Malaysia.',
+    tags: ['International Partnership', 'Event Documentation', 'Interactive Math'],
     photos: [
       { src: '/org_exp/fun_comap/1.jpg', title: 'FunMath Camp', caption: 'Group Photo with the Committee' },
       { src: '/org_exp/fun_comap/2.jpg', title: 'FunMath Camp', caption: 'Group Photo of Participants' },
@@ -86,8 +84,8 @@ const ORGANIZATIONS: OrgExperienceItem[] = [
     partner: 'Dinas Koperasi & Perdagangan Kab. Situbondo',
     location: 'Situbondo, Jawa Timur',
     description:
-      'In 2024, the Mathematics Study Program at Universitas Airlangga collaborated with the Department of Cooperatives, Industry, and Trade of Situbondo Regency and local MSME (Micro, Small, and Medium Enterprise) owners to enhance digital literacy through training in marketing and product branding based on local wisdom. The activities included social media training, online store creation, monitoring, mentoring, and evaluation. This program improved the competencies of MSME owners in digitally marketing Situbondo’s leading local products.',
-    tags: ['Event Documentation', 'UMKM Empowerment'],
+      'Empowered local micro, small, and medium enterprise (MSME) owners through digital marketing literacy training, local wisdom-based product branding, and online storefront setup in direct collaboration with the local government.',
+    tags: ['UMKM Empowerment', 'Product Branding', 'Event Documentation'],
     photos: [
       { src: '/org_exp/situbondo/16.jpg', title: 'Community Service in Situbondo, East Java', caption: 'Group Photo with Participants' },
       { src: '/org_exp/situbondo/17.jpg', title: 'Community Service in Situbondo, East Java', caption: 'Pre-test Session' },
@@ -103,11 +101,11 @@ const ORGANIZATIONS: OrgExperienceItem[] = [
     role: 'Photographer, Videographer & Editor',
     period: '18 Juli 2024',
     category: 'Community Service',
-    partner: 'SMKN Rengel Tuban (Multimedia & DKV)',
+    partner: 'SMKN Rengel Tuban',
     location: 'Tuban, Jawa Timur',
     description:
-      'Content Creator Trainingat SMKN Rengel, Tuban, was organized by the Community Service Team of the Bachelor’s Degree Program in Mathematics at Universitas Airlangga on July 18, 2024. The activity aimed to enhance students’ creativity and knowledge in digital content creation while introducing content creation as a potential career opportunity in the social media era. The training was attended by students from the Multimedia and Visual Communication Design departments.',
-    tags: ['Event Documentation', 'Video Editing'],
+      'Delivered hands-on digital content creation training for vocational high school students in Multimedia and Visual Communication Design (DKV), introducing videography workflows, storytelling techniques, and modern media career avenues.',
+    tags: ['Educational Training', 'Videography', 'Media Mentorship'],
     photos: [
       { src: '/org_exp/tuban/21.jpg', title: 'Community Service at SMKN Rengel Tuban, Jawa Timur', caption: 'Group Photo with Participants' },
       { src: '/org_exp/tuban/22.jpg', title: 'Community Service at SMKN Rengel Tuban, Jawa Timur', caption: 'Photo with The Speaker' },
@@ -118,118 +116,121 @@ const ORGANIZATIONS: OrgExperienceItem[] = [
   },
 ];
 
-// ── Main Component ───────────────────────────────────────────────────────────
 export default function OrganizationSection() {
-  const sectionRef = useScrollReveal<HTMLElement>({ threshold: 0.08 });
+  const sectionRef = useScrollReveal<HTMLElement>({ threshold: 0, rootMargin: '120px 0px 50px 0px' });
 
   return (
     <section
       id="organization"
       ref={sectionRef}
-      className="relative mx-auto w-full max-w-5xl px-6 sm:px-10 py-14 sm:py-20"
+      className="relative w-full py-16 sm:py-24"
     >
-      {/* ── Section Header ── */}
-      <div
-        data-reveal
-        data-delay="0"
-        className="reveal mb-10 flex items-baseline justify-between border-b border-foreground/10 pb-5"
-      >
-        <div className="flex items-center gap-3">
-          <Users className="h-4 w-4 text-[#EF4444]" />
-          <h2 className="text-xs sm:text-sm font-semibold tracking-wider text-foreground/60 uppercase">
-            Organizational and Volunteer Experience
+      <div className="mx-auto w-full max-w-5xl px-6 sm:px-10">
+
+        {/* ── Apple-style Section Header ───────────────────────────────── */}
+        <div data-reveal data-delay="0" className="reveal mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-red-500">
+            <Users className="h-3.5 w-3.5" />
+            <span>Organization &amp; Community</span>
+          </div>
+
+          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.12]">
+            Organizational and Volunteer Experience.
           </h2>
+          <p className="mt-3 text-base sm:text-lg text-foreground/60 max-w-2xl leading-relaxed">
+            During my university years, I was actively involved in student organizations and community service activities.
+          </p>
         </div>
-      </div>
 
-      {/* ── Experience Cards List ── */}
-      <div className="flex flex-col gap-8 sm:gap-10">
-        {ORGANIZATIONS.map((org, index) => (
-          <article
-            key={org.id}
-            data-reveal
-            data-delay={60 + index * 100}
-            className="reveal card-hover-lift group relative rounded-2xl border border-foreground/10 bg-foreground/[0.015] hover:bg-foreground/[0.025] hover:border-foreground/20 transition-all duration-300 p-6 sm:p-8"
-          >
-            {/* 2-Column Split: Content on Left, Photography Carousel on Right */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* ── Apple Material Glass Cards ───────────────────────────────── */}
+        <div className="flex flex-col gap-8">
+          {ORGANIZATIONS.map((org, index) => (
+            <article
+              key={org.id}
+              data-reveal
+              data-delay={String(60 + index * 100)}
+              className="reveal group relative overflow-hidden rounded-[28px] border border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-zinc-900/70 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.03),0_12px_32px_-4px_rgba(0,0,0,0.05)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3),0_16px_40px_-6px_rgba(0,0,0,0.6)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-black/[0.12] dark:hover:border-white/[0.18] before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-black/10 dark:before:via-white/20 before:to-transparent"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-              {/* ── Left Column: Initiative Narrative & Details ── */}
-              <div className="lg:col-span-6 flex flex-col justify-between h-full">
-                <div>
-                  {/* Header Row: Index Number & Category Badge */}
-                  <div className="flex items-center gap-2.5 mb-3.5">
-                    <span className="text-xs font-mono font-medium text-[#EF4444]">
-                      /{org.index}
-                    </span>
-                    <span className="inline-flex items-center rounded-full bg-foreground/[0.04] border border-foreground/10 px-2.5 py-0.5 text-[11px] font-medium text-foreground/75">
-                      {org.category}
-                    </span>
-                  </div>
-
-                  {/* Organization Name */}
-                  <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug">
-                    {org.organization}
-                  </h3>
-
-                  {/* Role & Period */}
-                  <div className="mt-1 mb-3">
-                    <p className="text-sm font-semibold text-foreground/90">
-                      {org.role}
-                    </p>
-                    <div className="flex items-center gap-1.5 text-xs text-foreground/50 mt-1 font-mono">
-                      <Calendar className="h-3 w-3 opacity-60" />
-                      <span>{org.period}</span>
+                {/* ── Left Column: Narrative & Meta ── */}
+                <div className="lg:col-span-6 flex flex-col justify-between h-full">
+                  <div>
+                    {/* Index & Category Badges */}
+                    <div className="flex items-center gap-2.5 mb-3.5">
+                      <span className="text-xs font-semibold text-red-500 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20">
+                        {org.index}
+                      </span>
+                      <span className="inline-flex items-center rounded-full bg-foreground/[0.04] border border-foreground/[0.08] px-3 py-0.5 text-xs font-medium text-foreground/75">
+                        {org.category}
+                      </span>
                     </div>
+
+                    {/* Organization Title */}
+                    <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground leading-snug">
+                      {org.organization}
+                    </h3>
+
+                    {/* Role & Period */}
+                    <div className="mt-2 mb-4">
+                      <p className="text-sm sm:text-base font-medium text-foreground/85">
+                        {org.role}
+                      </p>
+                      <div className="flex items-center gap-1.5 text-xs text-foreground/50 mt-1.5 font-medium">
+                        <Calendar className="h-3 w-3 text-red-500" />
+                        <span>{org.period}</span>
+                      </div>
+                    </div>
+
+                    {/* Metadata Chips (Location & Partner) */}
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-foreground/60 mb-5 pb-4 border-b border-foreground/[0.06]">
+                      {org.location && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <MapPin className="h-3 w-3 text-red-500/70" />
+                          <span>{org.location}</span>
+                        </span>
+                      )}
+                      {org.partner && (
+                        <span className="inline-flex items-center gap-1.5">
+                          <Layers className="h-3 w-3 text-foreground/40" />
+                          <span>{org.partner}</span>
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    <p className="text-xs sm:text-sm leading-relaxed text-foreground/65 mb-6">
+                      {org.description}
+                    </p>
                   </div>
 
-                  {/* Metadata (Location & Partner) */}
-                  <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-foreground/60 mb-4 pb-3 border-b border-foreground/8">
-                    {org.location && (
-                      <span className="inline-flex items-center gap-1.5">
-                        <MapPin className="h-3 w-3 opacity-60" />
-                        {org.location}
+                  {/* Interactive Tags */}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    {org.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-foreground/[0.07] bg-foreground/[0.025] px-3 py-1 text-xs font-medium text-foreground/65 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/5 hover:text-foreground"
+                      >
+                        {tag}
                       </span>
-                    )}
-                    {org.partner && (
-                      <span className="inline-flex items-center gap-1.5">
-                        <Layers className="h-3 w-3 opacity-60" />
-                        {org.partner}
-                      </span>
-                    )}
+                    ))}
                   </div>
-
-                  {/* Description Paragraph */}
-                  <p className="text-[13.5px] leading-relaxed text-foreground/70 mb-5">
-                    {org.description}
-                  </p>
                 </div>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1.5 pt-2">
-                  {org.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="rounded-md border border-foreground/8 bg-foreground/[0.03] px-2.5 py-1 text-[11px] font-medium text-foreground/65 transition-colors group-hover:border-foreground/15"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                {/* ── Right Column: Photo Gallery Carousel ── */}
+                <div className="lg:col-span-6 w-full">
+                  <PhotoGalleryCarousel
+                    photos={org.photos}
+                    aspectRatio="aspect-[16/10]"
+                    autoPlayInterval={4500}
+                  />
                 </div>
-              </div>
 
-              {/* ── Right Column: Photography Carousel ── */}
-              <div className="lg:col-span-6 w-full">
-                <PhotoGalleryCarousel
-                  photos={org.photos}
-                  aspectRatio="aspect-[16/10]"
-                  autoPlayInterval={4500}
-                />
               </div>
+            </article>
+          ))}
+        </div>
 
-            </div>
-          </article>
-        ))}
       </div>
     </section>
   );

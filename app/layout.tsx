@@ -20,7 +20,15 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Gading's Portfolio",
-  description: "Welcome to my portfolio. A modern, thoughtful portfolio built with Next.js, Tailwind CSS, and TypeScript.",
+  description: "Personal portfolio of Gading Wisnu Kusuma — Mathematical Modeling, Machine Learning, and Optimization.",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-touch-icon.png',
+  },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({

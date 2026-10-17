@@ -1,0 +1,28 @@
+{
+  "brand": "Gading Kusuma",
+  "tagline": "Mathematical Modeling · Machine Learning · Optimization",
+  "brief": "Personal brand identity for Gading Wisnu Kusuma, B.Sc. in Mathematics from Universitas Airlangga specializing in dynamical systems, machine learning, and optimization algorithms.",
+  "adjectives": ["Analytical", "Dynamic", "Minimalist", "High-Precision", "Intellectual"],
+  "industry": "software",
+  "brand_color": "#E60012",
+  "greyscale": false,
+  "final": true,
+  "round": 2,
+  "nav": ["Home", "Projects", "Research", "Connect"],
+  "concepts": [
+    {
+      "name": "The Golden Tusk G",
+      "symbol": "master/gading-symbol-color.svg",
+      "lockup": "master/gading-horizontal-color.svg",
+      "stacked": "master/gading-stacked-color.svg",
+      "avatar": "web-icons/gading-symbol-color-app-icon.svg",
+      "idea": "A golden logarithmic spiral merging natural dynamics and the graceful tusk curve into a high-precision G with a central crimson attractor.",
+      "rationale": [
+        "Rooted in nonlinear differential dynamics: the logarithmic spiral r = a*e^(b*theta) reflects natural growth and spiral attractors.",
+        "Embraces personal naming heritage: the dynamic curve echoes 'Gading' (ivory tusk) in an aerodynamic, forward-moving form.",
+        "Precision scaling: maintains razor-sharp clarity from 16 px browser favicon up to large-scale presentation slides and terminal headers."
+      ]
+    }
+  ],
+  "recommendation": "The Golden Tusk G perfectly unifies mathematical rigor with distinctive personal identity, providing an authoritative, ownable brand mark across web, academic research, and GitHub projects."
+}

@@ -2,27 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Briefcase, Calendar } from 'lucide-react';
-import { useTheme } from '@/components/ThemeProvider';
-import BorderGlow from '@/components/react-bits/BorderGlow';
-import WorkExperienceBackground from './WorkExperienceBackground';
+import { Briefcase, Calendar, Building2, CheckCircle2, TrendingUp, Sparkles } from 'lucide-react';
 import { useScrollReveal } from '@/lib/useScrollReveal';
-
-// ── Accent palette: warm orange to complement crimson edu section ───────────
-const ACCENT = '#F97316'; // orange-500
-
-function useWorkGlowProps(isLight: boolean) {
-  return {
-    glowColor: '24 95 53', // Warm orange hue
-    glowRadius: 28,
-    glowIntensity: isLight ? 0.7 : 0.9,
-    coneSpread: 22,
-    borderRadius: 16,
-    colors: ['#F97316', '#EA580C', '#FB923C'],
-    fillOpacity: isLight ? 0.08 : 0.12,
-    backgroundColor: isLight ? '#ffffff' : '#111111',
-  } as const;
-}
 
 interface WorkItem {
   company: string;
@@ -54,7 +35,7 @@ const EXPERIENCES: WorkItem[] = [
     role: 'Graphic Designer Intern',
     period: 'Des 2024 – Mar 2025',
     description:
-      'Coordinate the graphic design team, including division of tasks and coordination with supervisors and the social media team regarding content needs, as well as executing the design brief according to the brief.',
+      'Coordinating the graphic design team, managing task delegations, and collaborating directly with supervisors and social media teams on campaign briefs and visual communication deliverables.',
     logo: '/eduwork_logo.png',
     logoAlt: 'Logo Eduwork',
     tags: ['Graphic Design', 'Social Media', 'Team Coordination', 'Content Creation'],
@@ -66,7 +47,7 @@ const EXPERIENCES: WorkItem[] = [
     role: 'Content Creator Intern',
     period: 'Des 2023 – Mar 2024',
     description:
-      'Creating and managing educational content about data science, conducting topic research, and writing video scripts.',
+      'Creating and managing educational content on data science, conducting empirical topic research, writing structured technical video scripts, and communicating quantitative insights to broader audiences.',
     logo: '/ruangdata_logo.jpg',
     logoAlt: 'Logo Ruang Data Indonesia',
     tags: ['Content Creation', 'Data Science', 'Script Writing', 'Research'],
@@ -75,202 +56,109 @@ const EXPERIENCES: WorkItem[] = [
 ];
 
 export default function WorkExperienceSection() {
-  const { theme } = useTheme();
-  const isLight = theme === 'light';
-  const glowProps = useWorkGlowProps(isLight);
-  const sectionRef = useScrollReveal<HTMLElement>({ threshold: 0.08 });
+  const sectionRef = useScrollReveal<HTMLElement>({ threshold: 0, rootMargin: '120px 0px 50px 0px' });
 
   return (
     <section
       id="experience"
       ref={sectionRef}
-      className="relative w-full py-12 sm:py-16 overflow-hidden"
+      className="relative w-full py-16 sm:py-24"
     >
-      {/* ── Background GradientWaves (like EducationBackground) ── */}
-      <WorkExperienceBackground isLight={isLight} />
+      <div className="mx-auto w-full max-w-5xl px-6 sm:px-10">
 
-      {/* ── Top fade — blends smoothly from Education section above ── */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '160px',
-          background: 'linear-gradient(to bottom, var(--background), transparent)',
-          zIndex: 5,
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* ── Bottom fade — blends into section below ── */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: '160px',
-          background: 'linear-gradient(to bottom, transparent, var(--background))',
-          zIndex: 5,
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* ── Content wrapper (above background) ── */}
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-6 sm:px-10">
-        {/* ── Section header ──────────────────────────────────────────────── */}
-        <div
-          data-reveal
-          data-delay="0"
-          className="reveal mb-8 flex items-baseline justify-between border-b border-foreground/8 pb-5"
-        >
-          <div className="flex items-center gap-3">
-            <Briefcase className="h-4 w-4" style={{ color: `${ACCENT}cc` }} />
-            <h2 className="text-[1.1rem] font-medium tracking-tight text-foreground/50 uppercase">
-              Work Experience
-            </h2>
+        {/* ── Apple-style Section Header ───────────────────────────────── */}
+        <div data-reveal data-delay="0" className="reveal mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-red-500">
+            <Briefcase className="h-3.5 w-3.5" />
+            <span>Career Pathway</span>
           </div>
+
+          <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.12]">
+            Work Experience.
+          </h2>
+          <p className="mt-3 text-base sm:text-lg text-foreground/60 max-w-2xl leading-relaxed">
+            Hands-on industry experience bridging quantitative analysis, web technologies, and strategic visual design across diverse corporate and agency ecosystems.
+          </p>
         </div>
 
-        {/* ── Timeline list ───────────────────────────────────────────────── */}
-        <div className="relative flex flex-col gap-5">
-          {/* Vertical connector line (desktop) */}
-          <div
-            aria-hidden="true"
-            className="absolute left-[2.1rem] top-10 hidden sm:block"
-            style={{
-              width: 2,
-              bottom: 40,
-              background: `linear-gradient(to bottom, ${ACCENT}55, ${ACCENT}22, transparent)`,
-              borderRadius: 999,
-            }}
-          />
-
+        {/* ── Apple App Store / Card Deck List ─────────────────────────── */}
+        <div className="flex flex-col gap-6">
           {EXPERIENCES.map((exp, index) => (
             <div
-              key={index}
+              key={exp.company}
               data-reveal
-              data-delay={80 + index * 100}
-              className="reveal card-hover-lift relative"
+              data-delay={String(80 + index * 100)}
+              className="reveal group relative overflow-hidden rounded-[28px] border border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-zinc-900/70 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.03),0_12px_32px_-4px_rgba(0,0,0,0.05)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3),0_16px_40px_-6px_rgba(0,0,0,0.6)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-black/[0.12] dark:hover:border-white/[0.18] before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-black/10 dark:before:via-white/20 before:to-transparent"
             >
-              <BorderGlow {...glowProps} className="w-full" style={{ width: '100%', borderRadius: 16 }}>
-                <div className="p-5 sm:p-6 flex flex-col sm:flex-row gap-5">
+              <div className="flex flex-col sm:flex-row gap-6 sm:items-start">
 
-                  {/* ── Logo bubble ─────────────────────────────────────── */}
-                  <div className="relative flex h-16 w-16 shrink-0 items-center justify-center self-start sm:self-center">
-                    <div
-                      className={`relative flex h-full w-full items-center justify-center rounded-2xl border border-foreground/8 shadow-sm overflow-hidden ${exp.bgWhite
-                        ? 'bg-white p-2.5'
-                        : exp.logoFit === 'cover'
-                          ? 'bg-background/90 p-0'
-                          : 'bg-background/90 p-2'
-                        }`}
-                    >
-                      <Image
-                        src={exp.logo}
-                        alt={exp.logoAlt}
-                        width={64}
-                        height={64}
-                        className={`h-full w-full ${exp.logoFit === 'cover' ? 'object-cover' : 'object-contain'
-                          }`}
-                      />
+                {/* Apple Squircle App-Icon for Company Logo */}
+                <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-[20px] border border-black/[0.06] dark:border-white/10 bg-white p-2.5 shadow-sm transition-transform duration-300 group-hover:scale-105">
+                  <Image
+                    src={exp.logo}
+                    alt={exp.logoAlt}
+                    width={72}
+                    height={72}
+                    className={`h-full w-full ${exp.logoFit === 'cover' ? 'object-cover rounded-[14px]' : 'object-contain'
+                      }`}
+                  />
+                  {exp.isCurrent && (
+                    <span
+                      aria-label="Current role"
+                      className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full border-2 border-background bg-red-500 shadow-sm"
+                    />
+                  )}
+                </div>
+
+                {/* Experience Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground leading-snug">
+                        {exp.role}
+                      </h3>
+                      <div className="mt-1 flex items-center gap-2 text-sm font-medium text-foreground/60">
+                        <Building2 className="h-3.5 w-3.5 text-foreground/40" />
+                        <span>{exp.company}</span>
+                      </div>
                     </div>
-                    {/* Current badge dot */}
-                    {exp.isCurrent && (
-                      <span
-                        aria-label="Current role"
-                        className="absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-background"
-                        style={{ background: ACCENT }}
-                      />
-                    )}
+
+                    {/* Apple Period Pill */}
+                    <div className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-foreground/[0.08] bg-foreground/[0.03] px-3.5 py-1 text-xs font-medium text-foreground/75">
+                      <Calendar className="h-3 w-3 text-red-500" />
+                      <span>{exp.period}</span>
+                    </div>
                   </div>
 
-                  {/* ── Content ─────────────────────────────────────────── */}
-                  <div className="flex-1 min-w-0">
+                  {/* Description */}
+                  <p className="mt-4 text-xs sm:text-sm leading-relaxed text-foreground/65 max-w-3xl">
+                    {exp.description}
+                  </p>
 
-                    {/* Top row: role + period */}
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-[17px] sm:text-lg font-semibold tracking-tight text-foreground leading-snug">
-                          {exp.role}
-                        </h3>
-                        <p className="mt-0.5 text-sm font-medium text-foreground/55">
-                          {exp.company}
-                        </p>
-                      </div>
-
-                      {/* Period pill */}
-                      <span className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-full border border-foreground/8 bg-foreground/[0.03] px-2.5 py-1 text-[11px] text-foreground/45 tabular-nums whitespace-nowrap">
-                        <Calendar className="h-3 w-3" />
-                        {exp.period}
+                  {/* Apple Pill Tags */}
+                  <div className="mt-5 flex flex-wrap items-center gap-2 pt-1">
+                    {exp.isCurrent && (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-red-500/25 bg-red-500/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-red-600 dark:text-red-400">
+                        <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+                        Current
                       </span>
-                    </div>
-
-                    {/* Description */}
-                    <p className="mt-3 text-[13.5px] leading-relaxed text-foreground/60 max-w-[65ch]">
-                      {exp.description}
-                    </p>
-
-                    {/* Tags + current badge */}
-                    <div className="mt-4 flex flex-wrap items-center gap-2">
-                      {exp.isCurrent && (
-                        <span
-                          className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
-                          style={{
-                            borderColor: `${ACCENT}33`,
-                            background: `${ACCENT}12`,
-                            color: ACCENT,
-                          }}
-                        >
-                          <span
-                            className="h-1.5 w-1.5 rounded-full animate-pulse"
-                            style={{ background: ACCENT }}
-                          />
-                          Current
-                        </span>
-                      )}
-                      {exp.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded-md border border-foreground/8 bg-foreground/[0.02] px-2.5 py-1 text-[11px] text-foreground/50 transition-colors hover:border-foreground/20 hover:text-foreground/70"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                    )}
+                    {exp.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-foreground/[0.07] bg-foreground/[0.025] px-3 py-1 text-xs font-medium text-foreground/60 transition-all duration-200 hover:border-orange-500/30 hover:bg-orange-500/5 hover:text-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              </BorderGlow>
-            </div>
-          ))}
-        </div>
 
-        {/* ── Footer stat row ─────────────────────────────────────────────── */}
-        <div
-          data-work-reveal
-          data-work-delay={80 + EXPERIENCES.length * 120 + 60}
-          className="mt-8 flex flex-wrap gap-8 border-t border-foreground/8 pt-6"
-        >
-          {[
-            { label: 'Companies', value: EXPERIENCES.length },
-            { label: 'Total Duration', value: '18+ mo' },
-            { label: 'Domains', value: '3' },
-          ].map(({ label, value }) => (
-            <div key={label} className="flex flex-col gap-0.5">
-              <span
-                className="text-2xl font-semibold tabular-nums tracking-tight"
-                style={{ color: ACCENT }}
-              >
-                {value}
-              </span>
-              <span className="text-xs text-foreground/40 tracking-wide uppercase">{label}</span>
+              </div>
             </div>
           ))}
         </div>
-      </div>{/* end z-10 wrapper */}
+      </div>
     </section>
   );
 }

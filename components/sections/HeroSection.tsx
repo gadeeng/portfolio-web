@@ -192,7 +192,7 @@ export default function HeroSection() {
               <div className="h-[1px] w-5 bg-[#e60012]/60" aria-hidden="true" />
               <TextType
                 as="span"
-                text={['ようこそ', 'Welcome', 'Selamat Datang']}
+                text={['ようこそ', 'Welcome', 'Selamat Datang', 'أهلاً وسهلاً', '환영합니다', 'Sugeng Rawuh', 'Wilujeng Sumping', 'Bienvenue', 'Bienvenido', 'Willkommen', 'Добро пожаловать']}
                 typingSpeed={65}
                 deletingSpeed={35}
                 pauseDuration={2200}
@@ -242,10 +242,6 @@ export default function HeroSection() {
                 <div className="h-[1px] w-5 bg-[#e60012]/50" aria-hidden="true" />
                 <span className="text-[11px] sm:text-xs font-medium text-foreground/50 tracking-[0.14em] uppercase">
                   Mathematics Graduate
-                </span>
-                <span className="text-[#e60012]/60 text-xs">·</span>
-                <span className="text-[11px] sm:text-xs font-medium text-foreground/50 tracking-[0.14em] uppercase">
-                  Data Science
                 </span>
                 <div className="h-[1px] flex-1 bg-foreground/8" aria-hidden="true" />
               </div>
@@ -338,8 +334,8 @@ export default function HeroSection() {
                   anchorPosition={[0, 3.7, 0]}
                   jointDistance={0.88}
                   cardScale={isMobile ? 2.0 : 2.65}
-                  frontImage="/Lanyard%20Pics.webp"
-                  backImage="/Lanyard%20Pics.webp"
+                  frontImage="/Refron.png"
+                  backImage="/Refron.png"
                   imageFit="cover"
                 />
               ) : (
@@ -356,10 +352,6 @@ export default function HeroSection() {
             Portfolio · 2026
           </span>
           <div className="h-[1px] flex-1 bg-foreground/8" />
-          <span className="text-[9px] font-mono tracking-[0.3em] text-foreground/20 uppercase">
-            数理科学
-          </span>
-          <div className="h-[1px] w-8 bg-foreground/8" />
         </div>
 
       </div>

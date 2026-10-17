@@ -3,9 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Mail } from 'lucide-react';
-import { LinkedinIcon, GithubIcon } from '../icons';
+import { GmailIcon, LinkedinIcon, GithubIcon } from '../icons';
 import { useScrollReveal } from '../../lib/useScrollReveal';
 import PatternWaves from '@/components/PatternWaves';
+
+import BrandLogo from '@/components/BrandLogo';
 
 export default function ConnectSection() {
   const sectionRef = useScrollReveal<HTMLElement>({ threshold: 0.1 });
@@ -58,7 +60,7 @@ export default function ConnectSection() {
           </div>
 
           <div className="relative z-10">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground leading-[1.15] mb-5">
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground leading-[1.15] mb-4">
               Let&apos;s <span className="text-red-500">Connect!</span>
             </h2>
             <p className="text-sm sm:text-base text-foreground/55 leading-relaxed max-w-md">
@@ -134,42 +136,50 @@ export default function ConnectSection() {
           </div>
         </div>
 
-        {/* RIGHT — Social icons + copyright (lighter panel) */}
-        <div className="flex flex-col items-center justify-center gap-6 border-t md:border-t-0 md:border-l border-foreground/8 bg-foreground/[0.02] p-8 sm:p-10 md:col-span-2">
+        {/* RIGHT — Brand Logo + Social icons + copyright */}
+        <div className="flex flex-col items-center justify-center gap-7 border-t md:border-t-0 md:border-l border-foreground/8 bg-foreground/[0.02] p-8 sm:p-10 md:col-span-2">
+          {/* Brand Logo (Enlarged & Transparent) */}
+          <div className="flex items-center justify-center py-2">
+            <BrandLogo
+              variant="horizontal"
+              className="h-14 sm:h-16 md:h-20 w-auto max-w-[220px] sm:max-w-[260px] text-foreground transition-transform duration-300 hover:scale-105 select-none"
+            />
+          </div>
+
           {/* Social icons */}
           <div className="flex items-center gap-5">
-            {/* Email - Yellow Neon */}
+            {/* Gmail - Real Official Logo */}
             <a
               href="mailto:gadingkusuma.works@gmail.com"
               id="connect-footer-email"
-              aria-label="Send email"
-              className="group flex h-10 w-10 items-center justify-center rounded-full border border-foreground/12 bg-background/40 text-foreground/50 transition-all duration-300 hover:border-yellow-500/50 hover:bg-yellow-500/10 hover:scale-110 hover:shadow-[0_0_15px_rgba(234,179,8,0.5),0_0_30px_rgba(234,179,8,0.3),inset_0_0_10px_rgba(234,179,8,0.1)]"
+              aria-label="Send email via Gmail"
+              className="group flex h-11 w-11 items-center justify-center rounded-full border border-foreground/12 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:border-red-500/40 hover:bg-red-500/10 hover:scale-110 hover:shadow-[0_0_15px_rgba(234,67,53,0.35),0_0_25px_rgba(234,67,53,0.15)]"
             >
-              <Mail className="h-4 w-4 transition-all duration-300 group-hover:text-yellow-500 group-hover:drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]" />
+              <GmailIcon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
             </a>
 
-            {/* LinkedIn - Blue Neon */}
+            {/* LinkedIn - Real Official Logo */}
             <a
               href="https://www.linkedin.com/in/gadingkusuma/"
               id="connect-footer-linkedin"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn profile"
-              className="group flex h-10 w-10 items-center justify-center rounded-full border border-foreground/12 bg-background/40 text-foreground/50 transition-all duration-300 hover:border-blue-500/50 hover:bg-blue-500/10 hover:scale-110 hover:shadow-[0_0_15px_rgba(59,130,246,0.5),0_0_30px_rgba(59,130,246,0.3),inset_0_0_10px_rgba(59,130,246,0.1)]"
+              className="group flex h-11 w-11 items-center justify-center rounded-full border border-foreground/12 bg-background/50 backdrop-blur-sm transition-all duration-300 hover:border-[#0A66C2]/50 hover:bg-[#0A66C2]/15 hover:scale-110 hover:shadow-[0_0_15px_rgba(10,102,194,0.4),0_0_25px_rgba(10,102,194,0.2)]"
             >
-              <LinkedinIcon className="h-4 w-4 transition-all duration-300 group-hover:text-blue-500 group-hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+              <LinkedinIcon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
             </a>
 
-            {/* GitHub - White/Cyan Neon */}
+            {/* GitHub - Real Official Logo */}
             <a
               href="https://github.com/gadeeng"
               id="connect-footer-github"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub profile"
-              className="group flex h-10 w-10 items-center justify-center rounded-full border border-foreground/12 bg-background/40 text-foreground/50 transition-all duration-300 hover:border-cyan-400/50 hover:bg-cyan-400/10 hover:scale-110 hover:shadow-[0_0_15px_rgba(34,211,238,0.5),0_0_30px_rgba(34,211,238,0.3),inset_0_0_10px_rgba(34,211,238,0.1)]"
+              className="group flex h-11 w-11 items-center justify-center rounded-full border border-foreground/12 bg-background/50 backdrop-blur-sm text-foreground/80 transition-all duration-300 hover:border-foreground/40 hover:bg-foreground/10 hover:scale-110 hover:text-foreground hover:shadow-[0_0_15px_rgba(255,255,255,0.25)]"
             >
-              <GithubIcon className="h-4 w-4 transition-all duration-300 group-hover:text-cyan-400 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.9)]" />
+              <GithubIcon className="h-5 w-5 transition-transform duration-300 group-hover:scale-110" />
             </a>
           </div>
 
