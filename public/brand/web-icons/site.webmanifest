@@ -1,5 +1,6 @@
 {
   "name": "Gading Kusuma",
+  "short_name": "Gading",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -18,7 +19,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#111111",
-  "background_color": "#111111",
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
   "display": "standalone"
 }

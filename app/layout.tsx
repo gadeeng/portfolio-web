@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   description: "Personal portfolio of Gading Wisnu Kusuma — Mathematical Modeling, Machine Learning, and Optimization.",
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon.ico', sizes: 'any' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
     apple: '/apple-touch-icon.png',
