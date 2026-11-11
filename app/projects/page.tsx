@@ -31,6 +31,27 @@ export default function ProjectsPage() {
 
   const projects: Project[] = [
     {
+      name: 'Virtual Assistant ALIEF: Edukasi Cicilan Emas BSN',
+      role: 'Full-Stack & AI Engineer',
+      year: '2026',
+      category: 'Web Development',
+      description:
+        'Developed an interactive web platform and AI-powered virtual assistant (ALIEF) for PT Bank Syariah Nasional’s Sharia gold installment financing product (BSN Cicil Emas). Features real-time daily gold price tracking across major providers (Antam, Galeri 24, UBS), an interactive Murabahah financing & FTV simulation calculator, and a conversational assistant for instant product consultation.',
+      tags: ['Next.js', 'Gemini API', 'Financial Simulation', 'Sharia Fintech', 'Web Development'],
+      repositories: [
+        { name: 'Chatbot Repo', url: '#' },
+      ],
+      webApps: [
+        { name: 'Launch Assistant', url: 'https://cilem-chatbot.vercel.app/' },
+      ],
+      images: [
+        { src: '/projects_picts/cilem/1.png', alt: 'Landing Page' },
+        { src: '/projects_picts/cilem/2.png', alt: 'Gold Price Trend & Bullion Table' },
+        { src: '/projects_picts/cilem/3.png', alt: 'Financing Simulation Calculator' },
+        { src: '/projects_picts/cilem/4.png', alt: 'Chatbot ALIEF' },
+      ],
+    },
+    {
       name: 'Strategy to Increase Third-Party Funds by Optimizing BSN Customer/Prospective Customer Onboarding on the Bale Syariah App',
       role: 'Data Analyst & Researcher',
       year: '2026',
@@ -195,7 +216,7 @@ export default function ProjectsPage() {
 
         {/* ── Apple Bento Showcase Cards ──────────────────────────────── */}
         <div className="flex flex-col gap-8 sm:gap-14">
-          {projects.map((proj) => (
+          {projects.map((proj, projIndex) => (
             <article
               key={proj.name}
               className="group relative overflow-hidden rounded-[24px] sm:rounded-[36px] border border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-zinc-900/70 backdrop-blur-2xl p-4.5 sm:p-10 shadow-[0_2px_12px_rgba(0,0,0,0.03),0_12px_32px_-4px_rgba(0,0,0,0.05)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3),0_16px_40px_-6px_rgba(0,0,0,0.6)] transition-all duration-300 ease-out hover:border-black/[0.12] dark:hover:border-white/[0.18] before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-black/10 dark:before:via-white/20 before:to-transparent"
@@ -257,7 +278,11 @@ export default function ProjectsPage() {
               {/* Media Gallery / Screen Display */}
               {proj.images.length > 0 && (
                 <div className="mt-4 sm:mt-6">
-                  <ProjectCarousel name={proj.name} images={proj.images} />
+                  <ProjectCarousel
+                    name={proj.name}
+                    images={proj.images}
+                    priority={projIndex === 0}
+                  />
                 </div>
               )}
 

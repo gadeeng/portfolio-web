@@ -123,12 +123,12 @@ export default function OrganizationSection() {
     <section
       id="organization"
       ref={sectionRef}
-      className="relative w-full py-16 sm:py-24"
+      className="relative w-full py-14 sm:py-24"
     >
-      <div className="mx-auto w-full max-w-5xl px-6 sm:px-10">
+      <div className="mx-auto w-full max-w-5xl px-4 sm:px-10">
 
         {/* ── Apple-style Section Header ───────────────────────────────── */}
-        <div data-reveal data-delay="0" className="reveal mb-12 sm:mb-16">
+        <div data-reveal data-delay="0" className="reveal mb-10 sm:mb-16">
           <div className="inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-red-500">
             <Users className="h-3.5 w-3.5" />
             <span>Organization &amp; Community</span>
@@ -137,79 +137,79 @@ export default function OrganizationSection() {
           <h2 className="mt-4 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-foreground leading-[1.12]">
             Organizational and Volunteer Experience.
           </h2>
-          <p className="mt-3 text-base sm:text-lg text-foreground/60 max-w-2xl leading-relaxed">
+          <p className="mt-3 text-sm sm:text-lg text-foreground/60 max-w-2xl leading-relaxed">
             During my university years, I was actively involved in student organizations and community service activities.
           </p>
         </div>
 
         {/* ── Apple Material Glass Cards ───────────────────────────────── */}
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-6 sm:gap-8">
           {ORGANIZATIONS.map((org, index) => (
             <article
               key={org.id}
               data-reveal
               data-delay={String(60 + index * 100)}
-              className="reveal group relative overflow-hidden rounded-[28px] border border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-zinc-900/70 backdrop-blur-2xl p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.03),0_12px_32px_-4px_rgba(0,0,0,0.05)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3),0_16px_40px_-6px_rgba(0,0,0,0.6)] transition-all duration-300 ease-out hover:-translate-y-1 hover:border-black/[0.12] dark:hover:border-white/[0.18] before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-black/10 dark:before:via-white/20 before:to-transparent"
+              className="reveal group relative overflow-hidden rounded-[24px] sm:rounded-[28px] border border-black/[0.06] dark:border-white/[0.08] bg-white/80 dark:bg-zinc-900/70 backdrop-blur-2xl p-4.5 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.03),0_12px_32px_-4px_rgba(0,0,0,0.05)] dark:shadow-[0_2px_12px_rgba(0,0,0,0.3),0_16px_40px_-6px_rgba(0,0,0,0.6)] transition-all duration-300 ease-out sm:hover:-translate-y-1 hover:border-black/[0.12] dark:hover:border-white/[0.18] before:absolute before:inset-x-0 before:top-0 before:h-[1px] before:bg-gradient-to-r before:from-transparent before:via-black/10 dark:before:via-white/20 before:to-transparent"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-8 items-start">
 
                 {/* ── Left Column: Narrative & Meta ── */}
                 <div className="lg:col-span-6 flex flex-col justify-between h-full">
                   <div>
                     {/* Index & Category Badges */}
-                    <div className="flex items-center gap-2.5 mb-3.5">
-                      <span className="text-xs font-semibold text-red-500 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20">
+                    <div className="flex items-center gap-2 sm:gap-2.5 mb-3 sm:mb-3.5">
+                      <span className="text-[11px] sm:text-xs font-semibold text-red-500 px-2.5 py-0.5 rounded-full bg-red-500/10 border border-red-500/20">
                         {org.index}
                       </span>
-                      <span className="inline-flex items-center rounded-full bg-foreground/[0.04] border border-foreground/[0.08] px-3 py-0.5 text-xs font-medium text-foreground/75">
+                      <span className="inline-flex items-center rounded-full bg-foreground/[0.04] border border-foreground/[0.08] px-2.5 sm:px-3 py-0.5 text-[11px] sm:text-xs font-medium text-foreground/75">
                         {org.category}
                       </span>
                     </div>
 
                     {/* Organization Title */}
-                    <h3 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground leading-snug">
+                    <h3 className="text-lg sm:text-2xl font-semibold tracking-tight text-foreground leading-snug">
                       {org.organization}
                     </h3>
 
                     {/* Role & Period */}
-                    <div className="mt-2 mb-4">
+                    <div className="mt-1.5 sm:mt-2 mb-3.5 sm:mb-4">
                       <p className="text-sm sm:text-base font-medium text-foreground/85">
                         {org.role}
                       </p>
-                      <div className="flex items-center gap-1.5 text-xs text-foreground/50 mt-1.5 font-medium">
+                      <div className="flex items-center gap-1.5 text-xs text-foreground/50 mt-1 sm:mt-1.5 font-medium">
                         <Calendar className="h-3 w-3 text-red-500" />
                         <span>{org.period}</span>
                       </div>
                     </div>
 
                     {/* Metadata Chips (Location & Partner) */}
-                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-foreground/60 mb-5 pb-4 border-b border-foreground/[0.06]">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-foreground/60 mb-4 sm:mb-5 pb-3.5 sm:pb-4 border-b border-foreground/[0.06]">
                       {org.location && (
                         <span className="inline-flex items-center gap-1.5">
-                          <MapPin className="h-3 w-3 text-red-500/70" />
+                          <MapPin className="h-3 w-3 shrink-0 text-red-500/70" />
                           <span>{org.location}</span>
                         </span>
                       )}
                       {org.partner && (
                         <span className="inline-flex items-center gap-1.5">
-                          <Layers className="h-3 w-3 text-foreground/40" />
+                          <Layers className="h-3 w-3 shrink-0 text-foreground/40" />
                           <span>{org.partner}</span>
                         </span>
                       )}
                     </div>
 
                     {/* Description */}
-                    <p className="text-xs sm:text-sm leading-relaxed text-foreground/65 mb-6">
+                    <p className="text-xs sm:text-sm leading-relaxed text-foreground/65 mb-4 sm:mb-6">
                       {org.description}
                     </p>
                   </div>
 
                   {/* Interactive Tags */}
-                  <div className="flex flex-wrap gap-2 pt-1">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 pt-0.5 sm:pt-1">
                     {org.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-foreground/[0.07] bg-foreground/[0.025] px-3 py-1 text-xs font-medium text-foreground/65 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/5 hover:text-foreground"
+                        className="rounded-full border border-foreground/[0.07] bg-foreground/[0.025] px-2.5 sm:px-3 py-0.5 sm:py-1 text-[11px] sm:text-xs font-medium text-foreground/65 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/5 hover:text-foreground"
                       >
                         {tag}
                       </span>
@@ -221,7 +221,7 @@ export default function OrganizationSection() {
                 <div className="lg:col-span-6 w-full">
                   <PhotoGalleryCarousel
                     photos={org.photos}
-                    aspectRatio="aspect-[16/10]"
+                    aspectRatio="aspect-video"
                     autoPlayInterval={4500}
                   />
                 </div>
