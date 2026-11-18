@@ -20,6 +20,17 @@ interface WorkItem {
 
 const EXPERIENCES: WorkItem[] = [
   {
+    company: 'PT Bank Syariah Nasional',
+    role: 'Officer Development Program',
+    period: 'Oct 2026 – Present',
+    description: '',
+    logo: '/Logo BSN.webp',
+    logoAlt: 'Logo PT Bank Syariah Nasional',
+    tags: ['Sharia Banking', 'Banking Operations', 'Leadership'],
+    isCurrent: true,
+    logoFit: 'contain',
+  },
+  {
     company: 'PT Pelindo Daya Sejahtera',
     role: 'Marketing & Business Development Staff Intern',
     period: 'Des 2025 – Jun 2026',
@@ -131,9 +142,11 @@ export default function WorkExperienceSection() {
                   </div>
 
                   {/* Description */}
-                  <p className="mt-4 text-xs sm:text-sm leading-relaxed text-foreground/65 max-w-3xl">
-                    {exp.description}
-                  </p>
+                  {exp.description ? (
+                    <p className="mt-4 text-xs sm:text-sm leading-relaxed text-foreground/65 max-w-3xl">
+                      {exp.description}
+                    </p>
+                  ) : null}
 
                   {/* Apple Pill Tags */}
                   <div className="mt-5 flex flex-wrap items-center gap-2 pt-1">
